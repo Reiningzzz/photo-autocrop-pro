@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-mac-friends:
-    name: Build macOS DMG (Friends Free Edition)
+    name: Build Universal macOS DMG (Friends Free Edition)
     runs-on: macos-latest
     steps:
       - name: Checkout Repository
@@ -30,28 +30,29 @@ jobs:
           echo '{"flavor":"friends-free","freePass":true}' > build-flavor.json
           cat build-flavor.json
 
-      - name: Build macOS Friends DMG (arm64 & x64)
+      - name: Build Universal macOS Friends DMG
         run: |
-          npx electron-builder --mac dmg --arm64 --x64 --config.mac.artifactName='PhotoAutoCrop-Pro-Friends-Mac-${arch}.${ext}'
+          npx electron-builder --mac dmg --universal \
+            --config.mac.identity=null \
+            --config.afterPack=scripts/after-pack-mac.js \
+            --config.mac.artifactName='PhotoAutoCrop-Pro-Mac.${ext}'
 
-      - name: Prepare Install Guide in Dist
+      - name: Prepare Simple Install Guide in Dist
         run: |
-          cp docs/MAC_FRIENDS_INSTALL_GUIDE.md "dist/Mac安裝方法與首次開啟說明.md"
+          cp docs/MAC_FRIENDS_INSTALL_GUIDE.md "dist/給朋友的安裝說明.md"
           ls -lh dist/
 
-      - name: Verify macOS Artifacts & License-Free Flag
+      - name: Verify Universal DMG & License-Free Flag
         run: |
-          test -f dist/PhotoAutoCrop-Pro-Friends-Mac-arm64.dmg || (echo "Missing arm64.dmg" && exit 1)
-          test -f dist/PhotoAutoCrop-Pro-Friends-Mac-x64.dmg || (echo "Missing x64.dmg" && exit 1)
-          # 驗證打包後的 app.asar 內確實包含 build-flavor.json
-          test -d dist/mac-arm64 && npx @electron/asar list "dist/mac-arm64/PhotoAutoCrop Pro.app/Contents/Resources/app.asar" | grep "build-flavor.json" || true
-          echo "=== macOS Friends Edition DMG Build Verified ==="
+          test -f dist/PhotoAutoCrop-Pro-Mac.dmg || (echo "Missing Universal PhotoAutoCrop-Pro-Mac.dmg" && exit 1)
+          test -d dist/mac-universal && npx @electron/asar list "dist/mac-universal/PhotoAutoCrop Pro.app/Contents/Resources/app.asar" | grep "build-flavor.json"
+          echo "=== Universal macOS Friends Edition Verified ==="
 
       - name: Upload Friends Mac DMG Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: PhotoAutoCrop-Pro-Mac-Friends-Test
           path: |
-            dist/PhotoAutoCrop-Pro-Friends-Mac-*.dmg
-            dist/Mac安裝方法與首次開啟說明.md
+            dist/PhotoAutoCrop-Pro-Mac.dmg
+            dist/給朋友的安裝說明.md
           if-no-files-found: error
