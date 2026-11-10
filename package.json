@@ -1,0 +1,156 @@
+{
+    "name": "photo-autocrop-pro",
+    "version": "1.0.0",
+    "description": "PhotoAutoCrop Pro - 自動裁切照片邊框與批次處理工作台",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder --win nsis portable",
+        "dist:win": "electron-builder --win nsis portable",
+        "dist:win:nsis": "electron-builder --win nsis",
+        "dist:win:portable": "electron-builder --win portable",
+        "dist:mac": "electron-builder --mac dmg zip",
+        "dist:mac:arm64": "electron-builder --mac dmg zip --arm64",
+        "dist:mac:x64": "electron-builder --mac dmg zip --x64",
+        "dist:all": "electron-builder -mw",
+        "dist:protected": "node scripts/build-protected.js",
+        "obfuscate": "node scripts/build-protected.js --only-obfuscate",
+        "restore": "node scripts/build-protected.js --only-restore",
+        "bundle": "node scripts/create-release-bundle.js",
+        "test": "node test/qa-bdd-test-suite.js"
+    },
+    "keywords": [
+        "photo-crop",
+        "opencv",
+        "gemini",
+        "electron"
+    ],
+    "author": "PhotoAutoCrop Pro",
+    "license": "SEE LICENSE IN LICENSE.md",
+    "devDependencies": {
+        "electron": "^33.2.0",
+        "electron-builder": "^25.1.8",
+        "heic2any": "^0.0.4",
+        "javascript-obfuscator": "^5.9.0"
+    },
+    "build": {
+        "appId": "com.photoautocrop.pro",
+        "productName": "PhotoAutoCrop Pro",
+        "copyright": "Copyright © 2026 PhotoAutoCrop Pro",
+        "asar": true,
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "server.js",
+            "build-flavor*",
+            "index.html",
+            "style.css",
+            "favicon.png",
+            "favicon.ico",
+            "js/**/*",
+            "libs/**/*",
+            "build/icon.ico",
+            "build/icon.png",
+            "build/icon.icns",
+            "!photos/**/*",
+            "!cropped_photos/**/*",
+            "!dist/**/*",
+            "!*.bat",
+            "!.env*",
+            "!test/**/*",
+            "!scratch/**/*",
+            "!scripts/**/*",
+            "!samples/**/*",
+            "!output/**/*",
+            "!marketing/**/*",
+            "!tools/**/*",
+            "!features/**/*",
+            "!docs/**/*",
+            "!AGENTS.md",
+            "!README.md",
+            "!PROJECT.md",
+            "!START_HERE.html",
+            "!.git*"
+        ],
+        "win": {
+            "icon": "build/icon.ico",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "portable",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ],
+            "requestedExecutionLevel": "asInvoker",
+            "legalTrademarks": "PhotoAutoCrop Pro"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "perMachine": false,
+            "allowElevation": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "PhotoAutoCrop Pro",
+            "artifactName": "PhotoAutoCrop-Pro-Setup-${version}.${ext}",
+            "uninstallDisplayName": "PhotoAutoCrop Pro"
+        },
+        "portable": {
+            "artifactName": "PhotoAutoCrop-Pro-Portable.exe"
+        },
+        "mac": {
+            "category": "public.app-category.photography",
+            "icon": "build/icon.icns",
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": [
+                        "arm64",
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "zip",
+                    "arch": [
+                        "arm64",
+                        "x64"
+                    ]
+                }
+            ],
+            "artifactName": "PhotoAutoCrop-Pro-Mac-${version}-${arch}.${ext}",
+            "minimumSystemVersion": "11.0.0",
+            "hardenedRuntime": false,
+            "gatekeeperAssess": false
+        },
+        "dmg": {
+            "title": "PhotoAutoCrop Pro Installer",
+            "contents": [
+                {
+                    "x": 130,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ],
+            "window": {
+                "width": 540,
+                "height": 380
+            }
+        }
+    }
+}

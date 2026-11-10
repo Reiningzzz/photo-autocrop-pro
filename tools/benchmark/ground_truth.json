@@ -1,0 +1,54 @@
+{
+  "description": "PhotoAutoCrop Pro 官方客觀基準測試真值標註集 (Ground Truth Dataset)",
+  "version": "1.0.0",
+  "samples": [
+    {
+      "id": "sample_01",
+      "file": "sample_01_terrazzo_kids.png",
+      "scenario": "磨石子人物相片（考驗環境防腰斬：地面紋理與實體相紙邊緣分辨力）",
+      "expected_photo_count": 1,
+      "ground_truth_photos": [
+        {
+          "index": 1,
+          "name": "兩個小孩磨石子背景相片",
+          "box_2d": [56, 44, 968, 938],
+          "rotation": 270
+        }
+      ]
+    },
+    {
+      "id": "sample_02",
+      "file": "sample_02_sports_stacked.jpg",
+      "scenario": "運動會上下堆疊老相簿（考驗多相片分割力：中央透明壓條與雙場景分離）",
+      "expected_photo_count": 2,
+      "ground_truth_photos": [
+        {
+          "index": 1,
+          "name": "上方操場跑道相片",
+          "box_2d": [40, 48, 482, 942],
+          "rotation": 0
+        },
+        {
+          "index": 2,
+          "name": "下方帳篷表演相片",
+          "box_2d": [520, 48, 960, 942],
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "id": "sample_03",
+      "file": "sample_03_vintage_portrait.jpg",
+      "scenario": "歷史經典老照片（考驗紙張老化與邊界微暗角識別）",
+      "expected_photo_count": 1,
+      "ground_truth_photos": [
+        {
+          "index": 1,
+          "name": "經典復古肖像照",
+          "box_2d": [75, 75, 925, 920],
+          "rotation": 0
+        }
+      ]
+    }
+  ]
+}

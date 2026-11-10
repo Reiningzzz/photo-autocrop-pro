@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoAutoCrop Pro - AI Agent 商業指揮中心 (Mission Control) — 100% 發布就緒</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0b0d13;
+      --bg-surface: #121622;
+      --bg-card: #181d2d;
+      --bg-card-hover: #1f263b;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.3);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.2);
+      --accent-green: #10b981;
+      --accent-green-glow: rgba(16, 185, 129, 0.2);
+      --accent-yellow: #f59e0b;
+      --accent-purple: #a855f7;
+      --accent-red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 10%, #151b2e 0%, var(--bg-base) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 32px;
+      background: rgba(18, 22, 34, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px var(--accent-green-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text span {
+      font-size: 12px;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .readiness-meter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 6px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .readiness-label {
+      font-size: 12px;
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    .progress-bar-wrap {
+      width: 140px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #38bdf8);
+      border-radius: 4px;
+    }
+
+    .readiness-score {
+      font-size: 14px;
+      font-weight: 800;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    main {
+      flex: 1;
+      padding: 28px 32px;
+      max-width: 1680px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 28px;
+    }
+
+    @media (max-width: 1180px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .role-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .role-card:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .role-card.active {
+      border-color: #10b981;
+      box-shadow: 0 0 0 1px #10b981, 0 10px 25px var(--accent-green-glow);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .role-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-badge.done {
+      background: var(--accent-green-glow);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .role-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .role-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .role-files {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      background: rgba(0, 0, 0, 0.25);
+      padding: 6px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 成果發布橫幅 */
+    .launch-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .launch-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #34d399;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .launch-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .btn-launch {
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .inspector-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: calc(100vh - 120px);
+      position: sticky;
+      top: 86px;
+    }
+
+    .inspector-header {
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    .inspector-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .live-preview-box {
+      width: 100%;
+      height: 380px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0f172a;
+    }
+
+    .prompt-box {
+      background: #080a10;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">✓</div>
+      <div class="brand-text">
+        <h1>PhotoAutoCrop Pro</h1>
+        <span><span class="live-dot"></span> 商業發售全規格 100% 驗收完備</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="readiness-meter">
+        <span class="readiness-label">Gumroad 商業就緒度:</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <span class="readiness-score">100%</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="left-col">
+      <!-- 100% 發布橫幅 -->
+      <div class="launch-banner">
+        <div>
+          <div class="launch-title">🎉 7 大專業席位全部驗收通過！隨時可上架 Gumroad</div>
+          <div class="launch-desc">
+            Gumroad 授權驗證閉環、iPhone HEIC 自動轉碼、7 國語言引擎、300 DPI 印刷注入與動態 Port 已 100% 貫通。
+          </div>
+        </div>
+        <button class="btn-launch" onclick="window.open('http://127.0.0.1:3300', '_blank')">開啟主軟體體驗 ➔</button>
+      </div>
+
+      <div class="section-title">
+        <span>👥 7 大協作席位成果總表 (All Roles Completed)</span>
+        <span class="badge">7 / 7 全數交付</span>
+      </div>
+
+      <div class="roles-grid" id="rolesGrid"></div>
+    </div>
+
+    <!-- 右側：審查與成果視窗 -->
+    <aside class="inspector-panel">
+      <div class="inspector-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('progress')">📊 發布驗收總表</button>
+          <button class="tab-btn" onclick="switchTab('deliverable')">🎁 Gumroad 素材</button>
+          <button class="tab-btn" onclick="switchTab('prompt')">📜 派工存檔</button>
+        </div>
+      </div>
+      <div class="inspector-content" id="inspectorContent"></div>
+    </aside>
+  </main>
+
+  <script>
+    const ROLES = [
+      {
+        id: 'monetization',
+        tag: 'ROLE 01',
+        name: '商業產品經理 (Monetization PM)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'Gumroad License API 驗證、30 天離線寬限期、PRO 徽章與免費 3 張試用限制已全部貫通。',
+        files: 'server.js, index.html',
+        spec: 'features/01_gumroad_license.feature',
+        prompt: `Gumroad 授權驗證與試用版限制已 100% 實裝完畢。`
+      },
+      {
+        id: 'media',
+        tag: 'ROLE 03',
+        name: '影像適配工程師 (Media Engineer)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'iPhone 原生 HEIC/HEIF 前端拖曳自動轉碼、300 DPI 印刷注入、EXIF 保留與 OOM 記憶體防護完成。',
+        files: 'libs/heic2any.min.js, js/detector.js',
+        spec: 'features/02_heic_image_pipeline.feature',
+        prompt: `HEIC 自動轉碼管線與 EXIF/300 DPI 印刷標籤已 100% 貫通。`
+      },
+      {
+        id: 'i18n',
+        tag: 'ROLE 04',
+        name: 'UI/UX 與國際化設計師 (Localization)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'js/i18n.js 7 國語言引擎（英/德/法/日/西/繁/簡）已完整掛載於頂部導航列，支援即時切換。',
+        files: 'js/i18n.js, index.html',
+        spec: 'features/03_i18n_localization.feature',
+        prompt: `全球 7 國語言切換已 100% 實裝完畢。`
+      },
+      {
+        id: 'growth',
+        tag: 'ROLE 07',
+        name: '增長與營運專員 (Growth Lead)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'Gumroad 15 秒 Before/After 動態演示、銷售文案、早鳥代碼 EARLY100 與定價策略（$19/$39）。',
+        files: 'store_assets/*',
+        spec: '已完成 (demo_preview.html / landing_page.md)',
+        prompt: `Gumroad 商店行銷資產已全數就緒。`
+      },
+      {
+        id: 'architect',
+        tag: 'ROLE 02',
+        name: '軟體架構與安全性 (Lead Architect)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: '本地 Port 3300 動態自動避讓 (3301+)；代碼混淆與安全保護腳本 scripts/build-protected.js 就緒。',
+        files: 'server.js, scripts/build-protected.js',
+        spec: 'features/04_port_and_security.feature',
+        prompt: `動態 Port 與代碼保護腳本已 100% 就緒。`
+      },
+      {
+        id: 'qa',
+        tag: 'ROLE 05',
+        name: '發行與品質保證 (Release QA)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'docs/INSTALLATION_GUIDE.md 完成，提供 Windows SmartScreen 藍色告警白名單解除指南。',
+        files: 'docs/INSTALLATION_GUIDE.md',
+        spec: 'features/05_release_and_qa.feature',
+        prompt: `安裝與白名單解除指南已完成。`
+      },
+      {
+        id: 'writer',
+        tag: 'ROLE 06',
+        name: '技術寫作與客服 (Technical Writer)',
+        status: 'done',
+        statusText: '🟢 100% 驗收通過',
+        desc: 'Gumroad 商店營運指南、新手安裝與 100% 離線隱私宣告已納入 docs/ 與 store_assets/。',
+        files: 'docs/*, store_assets/*',
+        spec: 'Gumroad 售後交付物',
+        prompt: `技術文件與操作指南已完成。`
+      }
+    ];
+
+    let currentRoleId = 'monetization';
+    let currentTab = 'progress';
+
+    function renderRoles() {
+      const grid = document.getElementById('rolesGrid');
+      grid.innerHTML = ROLES.map(role => `
+        <div class="role-card ${role.id === currentRoleId ? 'active' : ''}" onclick="selectRole('${role.id}')">
+          <div class="card-top">
+            <span class="role-tag">${role.tag}</span>
+            <span class="status-badge ${role.status}">${role.statusText}</span>
+          </div>
+          <div class="role-name">${role.name}</div>
+          <div class="role-desc">${role.desc}</div>
+          <div class="role-files">📁 ${role.files}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectRole(id) {
+      currentRoleId = id;
+      renderRoles();
+      if (currentTab === 'progress') {
+        currentTab = 'prompt';
+      }
+      switchTab(currentTab);
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', 
+          (tab === 'progress' && idx === 0) || 
+          (tab === 'deliverable' && idx === 1) || 
+          (tab === 'prompt' && idx === 2)
+        );
+      });
+      renderInspector();
+    }
+
+    function renderInspector() {
+      const container = document.getElementById('inspectorContent');
+      const role = ROLES.find(r => r.id === currentRoleId);
+
+      if (currentTab === 'progress') {
+        container.innerHTML = `
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">🎉 商業發布全規格 100% 驗收報告</h3>
+          <div style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.4); border-radius: 8px; padding: 12px; margin-bottom: 14px; font-size: 12px; color: #34d399;">
+            <b>🏆 恭喜！全專案已具備全球發售商業水準</b><br>
+            所有功能閉環、保護機制與行銷資產已全數通過測試驗收。
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+              <b style="color: #34d399;">✓ Gumroad 授權與試用限制</b>
+              <p style="color: var(--text-muted); margin-top: 4px;">• 支持官方金鑰驗證 + 30 天離線寬限期<br>• 未啟用狀態單次限制 3 張，啟用後解鎖無限裁切</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+              <b style="color: #34d399;">✓ iPhone 原生 HEIC 自動轉碼</b>
+              <p style="color: var(--text-muted); margin-top: 4px;">• 手機翻拍照直接拖入無縫轉換<br>• 具備即時 HUD 轉碼進度條與 OOM 記憶體防護</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+              <b style="color: #34d399;">✓ 全球 7 國語言一鍵切換</b>
+              <p style="color: var(--text-muted); margin-top: 4px;">• 支援英語、德語、法語、日語、西語、繁中、簡中<br>• 自動偵測系統語言，偏好持久化保存</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+              <b style="color: #34d399;">✓ 印刷級 300 DPI 與動態 Port 容錯</b>
+              <p style="color: var(--text-muted); margin-top: 4px;">• 匯出自動注入 300 DPI 印刷標籤與 EXIF 元數據<br>• 本地伺服器 3300 被佔用時自動向後嘗試</p>
+            </div>
+          </div>
+        `;
+      } else if (currentTab === 'deliverable') {
+        container.innerHTML = `
+          <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">🎁 Gumroad 商店視覺資產</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            15 秒 Before/After 動態對比演示：
+          </p>
+          <iframe class="live-preview-box" src="../../START_HERE.html"></iframe>
+          <div style="margin-top: 10px; font-size: 11px; color: var(--text-dim);">
+            📄 銷售文案：store_assets/gumroad_landing_page.md ($19 / $39)
+          </div>
+        `;
+      } else if (currentTab === 'prompt') {
+        container.innerHTML = `
+          <h3 style="font-size: 15px; font-weight: 700;">${role.name}</h3>
+          <div class="prompt-box">${role.prompt}</div>
+          <div style="margin-top: 14px; font-size: 12px; color: var(--text-dim);">
+            <b>關聯規格契約：</b> <span style="font-family: 'JetBrains Mono'; color: var(--primary);">${role.spec}</span>
+          </div>
+        `;
+      }
+    }
+
+    renderRoles();
+    renderInspector();
+  </script>
+</body>
+</html>

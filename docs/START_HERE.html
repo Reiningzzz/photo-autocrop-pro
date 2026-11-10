@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoAutoCrop Pro — Quick Start & Security Trust Guide</title>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1a243d;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(56, 189, 248, 0.3);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #38bdf8;
+            --accent-emerald: #10b981;
+            --accent-indigo: #6366f1;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            padding: 2.5rem 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; }
+
+        /* Lang Switcher Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-badge {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand-badge span { color: var(--accent-cyan); }
+
+        .lang-switcher {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover { color: #ffffff; }
+        .lang-btn.active {
+            background: var(--accent-cyan);
+            color: #0b0f19;
+            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .hero-badge-version {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 0.25rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p.lead {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Guarantee Alert */
+        .guarantee-box {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .guarantee-icon {
+            font-size: 1.8rem;
+            color: var(--accent-emerald);
+            line-height: 1;
+        }
+
+        .guarantee-content h3 {
+            color: var(--accent-emerald);
+            font-size: 1.1rem;
+            margin-bottom: 0.35rem;
+            font-weight: 700;
+        }
+
+        .guarantee-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Editions Grid */
+        .edition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .edition-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .edition-item:hover {
+            border-color: var(--border-highlight);
+            background: var(--bg-card-hover);
+        }
+
+        .edition-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .tag-setup { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
+        .tag-portable { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+
+        .edition-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+
+        .edition-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* SmartScreen Visual Mock */
+        .smartscreen-mock {
+            background: #005a9e;
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 1.75rem;
+            margin-top: 1rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border: 1px solid #107cdd;
+        }
+
+        .smartscreen-mock h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .smartscreen-mock p {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .link-more-info {
+            color: #ffffff;
+            text-decoration: underline;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .smartscreen-action-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-mock {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .btn-mock.secondary { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .btn-mock.primary {
+            background: #ffffff;
+            color: #005a9e;
+            border-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        /* Workflow Steps */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+        }
+
+        .step-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--accent-cyan);
+            color: #0b0f19;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-card h4 {
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        /* Quick Docs Links */
+        .docs-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .doc-link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .doc-link-item:hover {
+            border-color: var(--border-highlight);
+            background: var(--bg-card-hover);
+            transform: translateX(4px);
+        }
+
+        .doc-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
+        .doc-info p { font-size: 0.82rem; color: var(--text-secondary); }
+        .doc-arrow { color: var(--accent-cyan); font-weight: 700; }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        footer a { color: var(--accent-cyan); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .edition-grid, .steps-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Top Language Switcher -->
+    <div class="top-bar">
+        <div class="brand-badge">
+            <span>⚡ PhotoAutoCrop</span> Pro
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="switchLang('en')">English (US)</button>
+            <button class="lang-btn" onclick="switchLang('zh-TW')">繁體中文</button>
+            <button class="lang-btn" onclick="switchLang('zh-CN')">简体中文</button>
+        </div>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="hero">
+        <div class="hero-badge-version">COMMERCIAL RELEASE • v1.0.0</div>
+        <h1 id="hero-title">Quick Start & Security Trust Guide</h1>
+        <p class="lead" id="hero-desc">
+            Thank you for purchasing PhotoAutoCrop Pro on Gumroad! Here is your quick start guide to launch the workstation and bypass initial OS security prompts in seconds.
+        </p>
+    </header>
+
+    <!-- Zero Cloud Guarantee Alert -->
+    <div class="guarantee-box">
+        <div class="guarantee-icon">🛡️</div>
+        <div class="guarantee-content">
+            <h3 id="guar-title">Zero-Cloud Guarantee: 100% On-Device Processing</h3>
+            <p id="guar-desc">
+                All computer vision detection and perspective corrections run entirely inside your computer's RAM. No photos are ever sent to any cloud server. The software operates at 100% speed completely offline with zero telemetry tracking.
+            </p>
+        </div>
+    </div>
+
+    <!-- Section 1: Edition Selection -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>🚀 <span id="sec1-title">Step 1: Choose Your Windows Edition</span></h2>
+        </div>
+        <div class="edition-grid">
+            <div class="edition-item">
+                <span class="edition-tag tag-setup" id="tag-setup">Standard Installer</span>
+                <div class="edition-title">PhotoAutoCrop-Pro-Setup-1.0.0.exe</div>
+                <div class="edition-desc" id="desc-setup">
+                    Installs cleanly to your user profile. Creates desktop shortcuts and Start Menu icons. Recommended for everyday desktop use.
+                </div>
+            </div>
+            <div class="edition-item">
+                <span class="edition-tag tag-portable" id="tag-portable">Standalone Portable</span>
+                <div class="edition-title">PhotoAutoCrop-Pro-Portable.exe</div>
+                <div class="edition-desc" id="desc-portable">
+                    Zero installation required. Run directly from any USB flash drive or folder without touching the Windows Registry.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Windows Defender SmartScreen Walkthrough -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>🛡️ <span id="sec2-title">Step 2: Windows Defender SmartScreen (2-Click Walkthrough)</span></h2>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem;" id="sec2-desc">
+            Because PhotoAutoCrop Pro is a newly released independent developer software, Windows Defender may show a blue notification window. This is standard for indie software without $800/yr corporate EV certificates. Rest assured: it contains zero malware.
+        </p>
+
+        <!-- Visual Mock -->
+        <div class="smartscreen-mock">
+            <h3 id="mock-title">Windows protected your PC</h3>
+            <p id="mock-p1">Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.</p>
+            <p>👉 <span id="mock-step1-txt">Step 1: Click here</span> ➔ <span class="link-more-info" id="mock-btn1">More info</span></p>
+            <div class="smartscreen-action-row">
+                <div class="btn-mock secondary" id="mock-btn-cancel">Don't run</div>
+                <div class="btn-mock primary" id="mock-btn2">👉 Step 2: Run anyway</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Activation & 3-Step Tour -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>⚡ <span id="sec3-title">Step 3: Gumroad License Activation & 3-Minute Tour</span></h2>
+        </div>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-badge">1</div>
+                <h4 id="tour1-title">Enter License Key</h4>
+                <p id="tour1-desc">Paste your 32-character key from your Gumroad receipt email to unlock unlimited batch export.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-badge">2</div>
+                <h4 id="tour2-title">Drag & Drop Photos</h4>
+                <p id="tour2-desc">Drop entire scanned album pages or HEIC photos. Individual photos are recognized and cropped instantly.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-badge">3</div>
+                <h4 id="tour3-title">Export 300 DPI ZIP</h4>
+                <p id="tour3-desc">Click "Export All Photos" to generate print-ready JPEGs injected with archival 300 DPI headers in one ZIP.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Full Documentation Links -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>📖 <span id="sec4-title">Comprehensive Documentation</span></h2>
+        </div>
+        <ul class="docs-list">
+            <li>
+                <a class="doc-link-item" href="USER_MANUAL.md">
+                    <div class="doc-info">
+                        <h4 id="doc1-title">User Manual (English) / 旗艦使用手冊</h4>
+                        <p id="doc1-desc">Full guide covering Corner Patrol, 3X loupe, layout memory, and keyboard shortcuts.</p>
+                    </div>
+                    <span class="doc-arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a class="doc-link-item" href="INSTALLATION_GUIDE.md">
+                    <div class="doc-info">
+                        <h4 id="doc2-title">Installation & Security Trust Guide / 安裝與安全性指南</h4>
+                        <p id="doc2-desc">Detailed Windows Defender & macOS Gatekeeper authorization steps.</p>
+                    </div>
+                    <span class="doc-arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a class="doc-link-item" href="TROUBLESHOOTING_FAQ.md">
+                    <div class="doc-info">
+                        <h4 id="doc3-title">Troubleshooting & FAQ / 常見問題與售後手冊</h4>
+                        <p id="doc3-desc">Solutions for camera glare, offline grace periods, and license questions.</p>
+                    </div>
+                    <span class="doc-arrow">→</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 PhotoAutoCrop Pro. All Rights Reserved. | Dedicated Support: <a href="mailto:support@photoautocrop.pro">support@photoautocrop.pro</a></p>
+        <p style="margin-top: 4px;">Backed by our 30-Day 100% Money-Back Guarantee.</p>
+    </footer>
+
+</div>
+
+<script>
+const i18n = {
+    'en': {
+        heroTitle: "Quick Start & Security Trust Guide",
+        heroDesc: "Thank you for purchasing PhotoAutoCrop Pro on Gumroad! Here is your quick start guide to launch the workstation and bypass initial OS security prompts in seconds.",
+        guarTitle: "Zero-Cloud Guarantee: 100% On-Device Processing",
+        guarDesc: "All computer vision detection and perspective corrections run entirely inside your computer's RAM. No photos are ever sent to any cloud server. The software operates at 100% speed completely offline with zero telemetry tracking.",
+        sec1Title: "Step 1: Choose Your Windows Edition",
+        tagSetup: "Standard Installer",
+        descSetup: "Installs cleanly to your user profile. Creates desktop shortcuts and Start Menu icons. Recommended for everyday desktop use.",
+        tagPortable: "Standalone Portable",
+        descPortable: "Zero installation required. Run directly from any USB flash drive or folder without touching the Windows Registry.",
+        sec2Title: "Step 2: Windows Defender SmartScreen (2-Click Walkthrough)",
+        sec2Desc: "Because PhotoAutoCrop Pro is a newly released independent developer software, Windows Defender may show a blue notification window. This is standard for indie software without $800/yr corporate EV certificates. Rest assured: it contains zero malware.",
+        mockTitle: "Windows protected your PC",
+        mockP1: "Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.",
+        mockStep1Txt: "Step 1: Click here",
+        mockBtn1: "More info",
+        mockBtnCancel: "Don't run",
+        mockBtn2: "👉 Step 2: Run anyway",
+        sec3Title: "Step 3: Gumroad License Activation & 3-Minute Tour",
+        tour1Title: "Enter License Key",
+        tour1Desc: "Paste your 32-character key from your Gumroad receipt email to unlock unlimited batch export.",
+        tour2Title: "Drag & Drop Photos",
+        tour2Desc: "Drop entire scanned album pages or HEIC photos. Individual photos are recognized and cropped instantly.",
+        tour3Title: "Export 300 DPI ZIP",
+        tour3Desc: "Click 'Export All Photos' to generate print-ready JPEGs injected with archival 300 DPI headers in one ZIP.",
+        sec4Title: "Comprehensive Documentation",
+        doc1Title: "User Manual (English) / 旗艦使用手冊",
+        doc1Desc: "Full guide covering Corner Patrol, 3X loupe, layout memory, and keyboard shortcuts.",
+        doc2Title: "Installation & Security Trust Guide / 安裝與安全性指南",
+        doc2Desc: "Detailed Windows Defender & macOS Gatekeeper authorization steps.",
+        doc3Title: "Troubleshooting & FAQ / 常見問題與售後手冊",
+        doc3Desc: "Solutions for camera glare, offline grace periods, and license questions."
+    },
+    'zh-TW': {
+        heroTitle: "快速上手與安全信任指南",
+        heroDesc: "感謝您在 Gumroad 支持 PhotoAutoCrop Pro！本指南協助您快速啟動工作台，並在數秒內輕鬆解除作業系統的首次安全提示。",
+        guarTitle: "Zero-Cloud 隱私保證：100% 本機端極速運算",
+        guarDesc: "所有影像辨識與透視拉平完全在您電腦的本地記憶體中完成，照片 1 Byte 都不會上傳至任何雲端伺服器。拔掉網路線依然 100% 離線高速運作，無任何木馬或行為追蹤。",
+        sec1Title: "第 1 步：選擇適合您的 Windows 版本",
+        tagSetup: "安裝版精靈",
+        descSetup: "自動安裝至使用者目錄，自動於桌面與開始功能表建立高清捷徑。推薦日常電腦主力使用。",
+        tagPortable: "隨身免安裝版",
+        descPortable: "單一執行檔隨點即開，可直接放入 USB 隨身碟隨插即用，不更動任何系統登錄檔。",
+        sec2Title: "第 2 步：Windows Defender SmartScreen 藍色視窗放行圖解",
+        sec2Desc: "由於軟體為剛發行之獨立開發者作品，尚未累積數萬次下載量，Windows 會主動提示防護視窗。我們未將每年數百美元的企業認證費轉嫁至售價，請安心放行，絕無病毒。",
+        mockTitle: "Windows 保護了您的電腦",
+        mockP1: "Microsoft Defender SmartScreen 已阻止未辨識的應用程式啟動。執行此應用程式可能會讓您的電腦面臨風險。",
+        mockStep1Txt: "第一步：點選此處藍色文字",
+        mockBtn1: "其他資訊",
+        mockBtnCancel: "不要執行",
+        mockBtn2: "👉 第二步：仍要執行",
+        sec3Title: "第 3 步：Gumroad 授權啟用與 3 步驟極速上手",
+        tour1Title: "輸入授權金鑰",
+        tour1Desc: "貼上 Gumroad 購買收據中的 32 碼金鑰，瞬間解除試用限制，開啟無限批次處理。",
+        tour2Title: "拖入翻拍照片",
+        tour2Desc: "將整頁多張老相簿或 iPhone HEIC 照片直接拖入，系統 1 秒自動分割並拉平照片。",
+        tour3Title: "打包匯出 300 DPI",
+        tour3Desc: "滿意後點選綠色匯出按鈕，系統自動注入 300 DPI 印刷標籤並打包為單一 ZIP 下載。",
+        sec4Title: "完整離線使用手冊與技術指南",
+        doc1Title: "旗艦使用手冊 (User Manual)",
+        doc1Desc: "完整介紹 Corner Patrol 角點巡檢、3X 放大鏡、相簿版型記憶與快速鍵教學。",
+        doc2Title: "安裝與安全性信任指引 (Installation Guide)",
+        doc2Desc: "包含 Windows Defender 與 macOS Gatekeeper 詳細排解與授權步驟。",
+        doc3Title: "常見問題與售後排解手冊 (Troubleshooting FAQ)",
+        doc3Desc: "翻拍反光抑制、30 天離線寬限期、授權碼更換電腦等詳細解答。"
+    },
+    'zh-CN': {
+        heroTitle: "快速上手与安全信任指南",
+        heroDesc: "感谢您在 Gumroad 支持 PhotoAutoCrop Pro！本指南协助您快速启动工作台，并在数秒内轻松解除操作系统的首次安全提示。",
+        guarTitle: "Zero-Cloud 隐私保证：100% 本地端极速运算",
+        guarDesc: "所有图像识别与透视拉平完全在您电脑的本地内存中完成，照片 1 Byte 都不会上传至任何云端服务器。拔掉网线依然 100% 离线高速运作，无任何木马或行为追踪。",
+        sec1Title: "第 1 步：选择适合您的 Windows 版本",
+        tagSetup: "安装版向导",
+        descSetup: "自动安装至用户目录，自动于桌面与开始菜单建立高清快捷方式。推荐日常电脑主力使用。",
+        tagPortable: "便携免安装版",
+        descPortable: "单一可执行文件即点即开，可直接放入 U 盘即插即用，不更改任何系统注册表。",
+        sec2Title: "第 2 步：Windows Defender SmartScreen 蓝色窗口放行图解",
+        sec2Desc: "由于软件为刚发布之独立开发者作品，尚未累积数万次下载量，Windows 会主动提示防护窗口。我们未将每年数百美元的企业认证费转嫁至售价，请安心放行，绝无病毒。",
+        mockTitle: "Windows 保护了你的电脑",
+        mockP1: "Microsoft Defender SmartScreen 已阻止未识别的应用启动。运行此应用可能会导致你的电脑面临风险。",
+        mockStep1Txt: "第一步：点击此处蓝色文字",
+        mockBtn1: "更多信息",
+        mockBtnCancel: "不运行",
+        mockBtn2: "👉 第二步：仍要运行",
+        sec3Title: "第 3 步：Gumroad 授权激活与 3 步骤极速上手",
+        tour1Title: "输入授权密钥",
+        tour1Desc: "粘贴 Gumroad 购买收据中的 32 位密钥，瞬间解除试用限制，开启无限批次处理。",
+        tour2Title: "拖入翻拍照片",
+        tour2Desc: "将整页多张老相册或 iPhone HEIC 照片直接拖入，系统 1 秒自动分割并拉平照片。",
+        tour3Title: "打包导出 300 DPI",
+        tour3Desc: "满意后点击绿色导出按钮，系统自动注入 300 DPI 印刷标签并打包为单一 ZIP 下载。",
+        sec4Title: "完整离线使用手册与技术指南",
+        doc1Title: "旗舰使用手册 (User Manual)",
+        doc1Desc: "完整介绍 Corner Patrol 角点巡检、3X 放大镜、相册版型记忆与快捷键教学。",
+        doc2Title: "安装与安全性信任指引 (Installation Guide)",
+        doc2Desc: "包含 Windows Defender 与 macOS Gatekeeper 详细排解与授权步骤。",
+        doc3Title: "常见问题与售后排解手册 (Troubleshooting FAQ)",
+        doc3Desc: "翻拍反光抑制、30 天离线宽限期、授权码更换电脑等详细解答。"
+    }
+};
+
+function switchLang(lang) {
+    const data = i18n[lang] || i18n['en'];
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    if (lang === 'en') document.querySelectorAll('.lang-btn')[0].classList.add('active');
+    if (lang === 'zh-TW') document.querySelectorAll('.lang-btn')[1].classList.add('active');
+    if (lang === 'zh-CN') document.querySelectorAll('.lang-btn')[2].classList.add('active');
+
+    document.getElementById('hero-title').textContent = data.heroTitle;
+    document.getElementById('hero-desc').textContent = data.heroDesc;
+    document.getElementById('guar-title').textContent = data.guarTitle;
+    document.getElementById('guar-desc').textContent = data.guarDesc;
+    document.getElementById('sec1-title').textContent = data.sec1Title;
+    document.getElementById('tag-setup').textContent = data.tagSetup;
+    document.getElementById('desc-setup').textContent = data.descSetup;
+    document.getElementById('tag-portable').textContent = data.tagPortable;
+    document.getElementById('desc-portable').textContent = data.descPortable;
+    document.getElementById('sec2-title').textContent = data.sec2Title;
+    document.getElementById('sec2-desc').textContent = data.sec2Desc;
+    document.getElementById('mock-title').textContent = data.mockTitle;
+    document.getElementById('mock-p1').textContent = data.mockP1;
+    document.getElementById('mock-step1-txt').textContent = data.mockStep1Txt;
+    document.getElementById('mock-btn1').textContent = data.mockBtn1;
+    document.getElementById('mock-btn-cancel').textContent = data.mockBtnCancel;
+    document.getElementById('mock-btn2').textContent = data.mockBtn2;
+    document.getElementById('sec3-title').textContent = data.sec3Title;
+    document.getElementById('tour1-title').textContent = data.tour1Title;
+    document.getElementById('tour1-desc').textContent = data.tour1Desc;
+    document.getElementById('tour2-title').textContent = data.tour2Title;
+    document.getElementById('tour2-desc').textContent = data.tour2Desc;
+    document.getElementById('tour3-title').textContent = data.tour3Title;
+    document.getElementById('tour3-desc').textContent = data.tour3Desc;
+    document.getElementById('sec4-title').textContent = data.sec4Title;
+    document.getElementById('doc1-title').textContent = data.doc1Title;
+    document.getElementById('doc1-desc').textContent = data.doc1Desc;
+    document.getElementById('doc2-title').textContent = data.doc2Title;
+    document.getElementById('doc2-desc').textContent = data.doc2Desc;
+    document.getElementById('doc3-title').textContent = data.doc3Title;
+    document.getElementById('doc3-desc').textContent = data.doc3Desc;
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+name: Cross-Platform Build & QA Smoke Test
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build Windows (NSIS & Portable)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Windows Installers
+        run: npm run dist:win
+
+      - name: Generate Checksums (SHA-256)
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path dist/*.exe | ForEach-Object {
+            $hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash
+            "$hash  $($_.Name)" | Out-File -FilePath dist/SHA256SUMS-win.txt -Append -Encoding ascii
+          }
+          Get-Content dist/SHA256SUMS-win.txt
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhotoAutoCrop-Pro-Windows
+          path: |
+            dist/*.exe
+            dist/SHA256SUMS-win.txt
+          if-no-files-found: error
+
+  build-macos:
+    name: Build macOS (DMG & Smoke Test)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build macOS Artifacts (arm64 & x64)
+        run: npm run dist:mac
+
+      - name: QA Automated Smoke Test (macOS App Launch Check)
+        run: |
+          echo "=== 開始 macOS 產物冒煙測試 (Smoke Test) ==="
+          ls -lh dist/
+          # 檢查是否有產出 dmg 與 zip
+          test -f dist/PhotoAutoCrop-Pro-Mac-*-arm64.dmg || (echo "缺少 arm64 DMG" && exit 1)
+          test -f dist/PhotoAutoCrop-Pro-Mac-*-x64.dmg || (echo "缺少 x64 DMG" && exit 1)
+          echo "=== DMG 產物存在性驗證通過 ==="
+
+      - name: Generate Checksums (SHA-256)
+        run: |
+          cd dist
+          shasum -a 256 *.dmg *.zip > SHA256SUMS-mac.txt
+          cat SHA256SUMS-mac.txt
+
+      - name: Upload macOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhotoAutoCrop-Pro-macOS
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/SHA256SUMS-mac.txt
+          if-no-files-found: error

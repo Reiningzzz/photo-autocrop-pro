@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.build_backup/
+build-flavor.json
+samples/
+output/
+marketing/
+*.log
+.DS_Store
+Thumbs.db
