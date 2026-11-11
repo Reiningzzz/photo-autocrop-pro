@@ -33,6 +33,7 @@ jobs:
       - name: Build Universal macOS Friends DMG
         run: |
           npx electron-builder --mac dmg --universal \
+            --publish never \
             --config.mac.identity=null \
             --config.afterPack=scripts/after-pack-mac.js \
             --config.mac.artifactName='PhotoAutoCrop-Pro-Mac.${ext}'
@@ -45,7 +46,7 @@ jobs:
       - name: Verify Universal DMG & License-Free Flag
         run: |
           test -f dist/PhotoAutoCrop-Pro-Mac.dmg || (echo "Missing Universal PhotoAutoCrop-Pro-Mac.dmg" && exit 1)
-          test -d dist/mac-universal && npx @electron/asar list "dist/mac-universal/PhotoAutoCrop Pro.app/Contents/Resources/app.asar" | grep "build-flavor.json"
+          node -e "const asar = require('@electron/asar'); const list = asar.listPackage('dist/mac-universal/PhotoAutoCrop Pro.app/Contents/Resources/app.asar'); if (!list.some(f => f.includes('build-flavor.json'))) throw new Error('Missing build-flavor.json in app.asar'); console.log('Verified build-flavor.json inside universal app.asar');"
           echo "=== Universal macOS Friends Edition Verified ==="
 
       - name: Upload Friends Mac DMG Artifacts

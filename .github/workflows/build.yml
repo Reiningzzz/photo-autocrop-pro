@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Build Windows Installers
-        run: npm run dist:win
+        run: npm run dist:win -- --publish never
 
       - name: Generate Checksums (SHA-256)
         shell: pwsh
@@ -61,7 +61,7 @@ jobs:
         run: npm install
 
       - name: Build macOS Artifacts (arm64 & x64)
-        run: npm run dist:mac
+        run: npm run dist:mac -- --publish never
 
       - name: QA Automated Smoke Test (macOS App Launch Check)
         run: |
