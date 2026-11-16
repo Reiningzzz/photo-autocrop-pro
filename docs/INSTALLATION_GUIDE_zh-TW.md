@@ -25,9 +25,9 @@
 
 ### 2. 為什麼會出現「Windows 保護了您的電腦 (SmartScreen)」？
 
-微軟 Windows Defender SmartScreen 在遇到剛發行、尚未累積數萬次下載的獨立開發者軟體時，會主動跳出藍色防護視窗。  
+微軟 Windows Defender SmartScreen 在遇到剛發行、尚未累積大量下載遙測紀錄的獨立開發者軟體時，會主動跳出藍色防護提示。  
 **請安心，這絕非代表軟體含有病毒！**  
-為了維持 $19 USD 終身買斷的親民售價，我們**未將微軟每年要價數百至上千美元的企業代碼簽名認證費 (EV Certificate) 轉嫁至使用者身上**。這是全球獨立軟體開發者（Indie Developers）的普遍現象。
+PhotoAutoCrop Pro 為純本機離線桌面工具。由於獨立發行版本未內建微軟高額年費之企業預載憑證，微軟 SmartScreen 會在初次啟動新發行版本時出現預設防護提示。所有安裝檔均通過雜湊驗證，不含惡意程式，且 100% 於本機端執行，請安心放行。
 
 ---
 
@@ -95,7 +95,7 @@
 #### 方案 C（進階：清除 Quarantine 隔離屬性終端機指令）
 若系統提示「應用程式已損壞，您應該將它丟到垃圾桶」，此為 macOS 對未簽名下載檔案自動加註之隔離標籤。打開「終端機 (Terminal)」，貼入以下指令並按 Enter 即可瞬間解除：
 ```bash
-xattr -cr /Applications/PhotoAutoCrop\ Pro.app
+xattr -cr "/Applications/PhotoAutoCrop Pro.app"
 ```
 
 ---

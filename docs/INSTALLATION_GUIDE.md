@@ -27,9 +27,9 @@ This guide provides non-technical, step-by-step installation instructions for bo
 
 ### 2. Why Does "Windows protected your PC (SmartScreen)" Appear?
 
-Microsoft Windows Defender SmartScreen displays a blue advisory screen whenever a newly released executable from an independent developer has not yet accumulated tens of thousands of download counts.  
-**Rest assured: This does NOT indicate any virus, malware, or security defect.**  
-To keep PhotoAutoCrop Pro accessible at an honest $19 USD one-time lifetime license, we **do not pass Microsoft's expensive annual Enterprise Extended Validation (EV) Code Signing fees ($500–$1,000/year) onto our customers**. This is standard practice among reputable independent software developers worldwide.
+Microsoft Windows Defender SmartScreen displays a blue advisory screen whenever a newly released executable from an independent developer has not yet accumulated extensive download telemetry in Microsoft's reputation database.  
+**Rest assured: This does NOT indicate any virus, malware, or defect.**  
+PhotoAutoCrop Pro is a 100% on-device tool. Because independent release builds do not carry costly enterprise EV pre-loaded certificates, Windows Defender applies this default initial advisory. All distributed binaries are SHA-256 verified and contain zero adware or telemetry tracking.
 
 ---
 
@@ -92,7 +92,7 @@ To keep PhotoAutoCrop Pro accessible at an honest $19 USD one-time lifetime lice
 #### Method C: Clear Quarantine Flag (Advanced Terminal Command)
 If macOS warns that *"The application is damaged and should be moved to the Trash"*, this is Apple's automated quarantine flag applied to unnotarized web downloads. Open Terminal and run:
 ```bash
-xattr -cr /Applications/PhotoAutoCrop\ Pro.app
+xattr -cr "/Applications/PhotoAutoCrop Pro.app"
 ```
 
 ---

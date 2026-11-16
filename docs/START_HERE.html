@@ -35,7 +35,7 @@
 
         .container { max-width: 960px; margin: 0 auto; }
 
-        /* Lang Switcher Bar */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -47,7 +47,7 @@
 
         .brand-badge {
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             letter-spacing: -0.5px;
             color: var(--text-primary);
             display: flex;
@@ -91,7 +91,7 @@
             background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
             border-radius: 1.25rem;
             border: 1px solid var(--border-color);
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             position: relative;
         }
 
@@ -132,7 +132,7 @@
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 1rem;
             padding: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             display: flex;
             gap: 1.25rem;
             align-items: flex-start;
@@ -155,6 +155,43 @@
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.55;
+        }
+
+        /* Platform Selector Bar */
+        .platform-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .platform-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .platform-btn:hover {
+            color: #ffffff;
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+
+        .platform-btn.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+            border-color: var(--accent-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
 
         /* Section Cards */
@@ -213,6 +250,7 @@
         }
         .tag-setup { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
         .tag-portable { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .tag-mac { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
 
         .edition-title {
             font-size: 1.1rem;
@@ -226,6 +264,7 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             margin-bottom: 1rem;
+            line-height: 1.5;
         }
 
         /* SmartScreen Visual Mock */
@@ -284,6 +323,148 @@
             color: #005a9e;
             border-color: #ffffff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        /* Method Cards for Mac */
+        .mac-methods-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .method-badge-rec {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            margin-bottom: 0.75rem;
+        }
+
+        .method-badge-alt {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-amber);
+            margin-bottom: 0.75rem;
+        }
+
+        .method-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .method-desc {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.55;
+        }
+
+        .method-steps-list {
+            margin-left: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+        .method-steps-list li { margin-bottom: 0.4rem; }
+        .method-steps-list strong { color: #ffffff; }
+
+        /* Terminal Component */
+        .terminal-box {
+            background: #060911;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .terminal-header {
+            background: #0f172a;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .terminal-dot.dot-red { background: #ef4444; }
+        .terminal-dot.dot-yellow { background: #f59e0b; }
+        .terminal-dot.dot-green { background: #10b981; }
+
+        .terminal-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: 8px;
+            font-family: monospace;
+        }
+
+        .terminal-body {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.88rem;
+            color: #38bdf8;
+            overflow-x: auto;
+        }
+
+        .terminal-code {
+            word-break: break-all;
+            user-select: all;
+        }
+
+        .copy-btn {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-cyan);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-cyan);
+            color: #0b0f19;
+        }
+
+        .copy-btn.copied {
+            background: var(--accent-emerald);
+            border-color: var(--accent-emerald);
+            color: #0b0f19;
         }
 
         /* Workflow Steps */
@@ -370,6 +551,9 @@
         @media (max-width: 768px) {
             .edition-grid, .steps-container { grid-template-columns: 1fr; }
             .hero h1 { font-size: 2rem; }
+            .platform-nav { flex-direction: column; }
+            .terminal-body { flex-direction: column; align-items: flex-start; }
+            .copy-btn { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -409,46 +593,132 @@
         </div>
     </div>
 
-    <!-- Section 1: Edition Selection -->
-    <div class="section-card">
-        <div class="section-header">
-            <h2>🚀 <span id="sec1-title">Step 1: Choose Your Windows Edition</span></h2>
-        </div>
-        <div class="edition-grid">
-            <div class="edition-item">
-                <span class="edition-tag tag-setup" id="tag-setup">Standard Installer</span>
-                <div class="edition-title">PhotoAutoCrop-Pro-Setup-1.0.0.exe</div>
-                <div class="edition-desc" id="desc-setup">
-                    Installs cleanly to your user profile. Creates desktop shortcuts and Start Menu icons. Recommended for everyday desktop use.
+    <!-- Platform Selector Bar -->
+    <div class="platform-nav">
+        <button class="platform-btn active" id="btn-tab-windows" onclick="switchPlatform('windows')">
+            <span>🪟</span> <span id="tab-label-win">Windows Guide</span>
+        </button>
+        <button class="platform-btn" id="btn-tab-macos" onclick="switchPlatform('macos')">
+            <span>🍎</span> <span id="tab-label-mac">macOS Guide</span>
+        </button>
+    </div>
+
+    <!-- PLATFORM 1: WINDOWS SECTION -->
+    <div id="section-windows">
+        <!-- Windows Edition Selection -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>🚀 <span id="win-sec1-title">Step 1: Choose Your Windows Edition</span></h2>
+            </div>
+            <div class="edition-grid">
+                <div class="edition-item">
+                    <span class="edition-tag tag-setup" id="tag-setup">Standard Installer</span>
+                    <div class="edition-title">PhotoAutoCrop-Pro-Setup-1.0.0.exe</div>
+                    <div class="edition-desc" id="desc-setup">
+                        Installs cleanly to your user profile. Creates desktop shortcuts and Start Menu icons. Recommended for everyday desktop use.
+                    </div>
+                </div>
+                <div class="edition-item">
+                    <span class="edition-tag tag-portable" id="tag-portable">Standalone Portable</span>
+                    <div class="edition-title">PhotoAutoCrop-Pro-Portable.exe</div>
+                    <div class="edition-desc" id="desc-portable">
+                        Zero installation required. Run directly from any USB flash drive or folder without touching the Windows Registry.
+                    </div>
                 </div>
             </div>
-            <div class="edition-item">
-                <span class="edition-tag tag-portable" id="tag-portable">Standalone Portable</span>
-                <div class="edition-title">PhotoAutoCrop-Pro-Portable.exe</div>
-                <div class="edition-desc" id="desc-portable">
-                    Zero installation required. Run directly from any USB flash drive or folder without touching the Windows Registry.
+        </div>
+
+        <!-- Windows Defender SmartScreen Walkthrough -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>🛡️ <span id="win-sec2-title">Step 2: Windows Defender SmartScreen (2-Click Walkthrough)</span></h2>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem; line-height: 1.55;" id="win-sec2-desc">
+                PhotoAutoCrop Pro is an independent on-device software. Because newly released builds have not yet established widespread automated cloud reputation with Microsoft Defender, Windows may display an initial protection notification. The software is verified virus-free, operates completely offline, and contains zero adware or telemetry tracking.
+            </p>
+
+            <!-- Visual Mock -->
+            <div class="smartscreen-mock">
+                <h3 id="mock-title">Windows protected your PC</h3>
+                <p id="mock-p1">Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.</p>
+                <p>👉 <span id="mock-step1-txt">Step 1: Click here</span> ➔ <span class="link-more-info" id="mock-btn1">More info</span></p>
+                <div class="smartscreen-action-row">
+                    <div class="btn-mock secondary" id="mock-btn-cancel">Don't run</div>
+                    <div class="btn-mock primary" id="mock-btn2">👉 Step 2: Run anyway</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 2: Windows Defender SmartScreen Walkthrough -->
-    <div class="section-card">
-        <div class="section-header">
-            <h2>🛡️ <span id="sec2-title">Step 2: Windows Defender SmartScreen (2-Click Walkthrough)</span></h2>
+    <!-- PLATFORM 2: MACOS SECTION -->
+    <div id="section-macos" style="display: none;">
+        <!-- macOS Step 1: Install to Applications -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>🍏 <span id="mac-sec1-title">Step 1: Install into Applications Folder</span></h2>
+            </div>
+            <div class="edition-item">
+                <span class="edition-tag tag-mac" id="tag-mac">macOS Universal Disk Image</span>
+                <div class="edition-title">PhotoAutoCrop-Pro-Mac.dmg (or arm64 / x64 .dmg)</div>
+                <div class="edition-desc" id="desc-mac">
+                    Double-click the downloaded <code>.dmg</code> file, then drag the <strong>PhotoAutoCrop Pro</strong> application icon into your <strong>Applications (應用程式)</strong> folder.
+                </div>
+            </div>
         </div>
-        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem;" id="sec2-desc">
-            Because PhotoAutoCrop Pro is a newly released independent developer software, Windows Defender may show a blue notification window. This is standard for indie software without $800/yr corporate EV certificates. Rest assured: it contains zero malware.
-        </p>
 
-        <!-- Visual Mock -->
-        <div class="smartscreen-mock">
-            <h3 id="mock-title">Windows protected your PC</h3>
-            <p id="mock-p1">Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.</p>
-            <p>👉 <span id="mock-step1-txt">Step 1: Click here</span> ➔ <span class="link-more-info" id="mock-btn1">More info</span></p>
-            <div class="smartscreen-action-row">
-                <div class="btn-mock secondary" id="mock-btn-cancel">Don't run</div>
-                <div class="btn-mock primary" id="mock-btn2">👉 Step 2: Run anyway</div>
+        <!-- macOS Step 2: Gatekeeper 2-Click Walkthrough & Terminal Override -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>🛡️ <span id="mac-sec2-title">Step 2: macOS Gatekeeper Authorization (2 Easy Methods)</span></h2>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem; line-height: 1.55;" id="mac-sec2-desc">
+                macOS Gatekeeper protects your Mac by default against unnotarized independent software. You can authorize PhotoAutoCrop Pro in seconds using either method below:
+            </p>
+
+            <div class="mac-methods-grid">
+                <!-- Method 1: Control + Click (Recommended) -->
+                <div class="method-card">
+                    <div class="method-badge-rec" id="mac-m1-badge">✨ Recommended Method (Fastest)</div>
+                    <h3 class="method-title" id="mac-m1-title">Method 1: Control + Click Open</h3>
+                    <p class="method-desc" id="mac-m1-desc">
+                        Bypasses Gatekeeper without modifying any system security settings:
+                    </p>
+                    <ol class="method-steps-list" id="mac-m1-steps">
+                        <li>In Finder, open your <strong>Applications</strong> folder.</li>
+                        <li>Hold down the <strong><code>Control</code></strong> key and click the <strong>PhotoAutoCrop Pro</strong> icon (or right-click).</li>
+                        <li>In the context menu, select <strong>Open</strong>.</li>
+                        <li>A confirmation prompt appears with an "Open" button. Click <strong>Open</strong> to launch.</li>
+                    </ol>
+                    <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.75rem;" id="mac-m1-note">
+                        * Note: This is only required on the very first launch. macOS remembers your approval permanently.
+                    </p>
+                </div>
+
+                <!-- Method 2: Terminal Quarantine Removal -->
+                <div class="method-card">
+                    <div class="method-badge-alt" id="mac-m2-badge">⚡ Advanced One-Click Fix</div>
+                    <h3 class="method-title" id="mac-m2-title">Method 2: Clear Quarantine Flag via Terminal</h3>
+                    <p class="method-desc" id="mac-m2-desc">
+                        If macOS displays "App is damaged and can't be opened" or strictly prevents launch, remove Apple's automated download quarantine attribute with one command:
+                    </p>
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <span class="terminal-dot dot-red"></span>
+                            <span class="terminal-dot dot-yellow"></span>
+                            <span class="terminal-dot dot-green"></span>
+                            <span class="terminal-title">Terminal</span>
+                        </div>
+                        <div class="terminal-body">
+                            <span class="terminal-code" id="term-cmd">xattr -cr "/Applications/PhotoAutoCrop Pro.app"</span>
+                            <button class="copy-btn" id="btn-copy-cmd" onclick="copyTerminalCommand()">
+                                <span id="copy-btn-text">📋 Copy Command</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.75rem;" id="mac-m2-note">
+                        * Open Terminal (Cmd + Space, type "Terminal"), paste the command, and press Enter. Then double-click the app normally.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -484,7 +754,7 @@
         </div>
         <ul class="docs-list">
             <li>
-                <a class="doc-link-item" href="USER_MANUAL.md">
+                <a class="doc-link-item" id="link-doc-manual" href="USER_MANUAL.md">
                     <div class="doc-info">
                         <h4 id="doc1-title">User Manual (English) / 旗艦使用手冊</h4>
                         <p id="doc1-desc">Full guide covering Corner Patrol, 3X loupe, layout memory, and keyboard shortcuts.</p>
@@ -493,7 +763,7 @@
                 </a>
             </li>
             <li>
-                <a class="doc-link-item" href="INSTALLATION_GUIDE.md">
+                <a class="doc-link-item" id="link-doc-install" href="INSTALLATION_GUIDE.md">
                     <div class="doc-info">
                         <h4 id="doc2-title">Installation & Security Trust Guide / 安裝與安全性指南</h4>
                         <p id="doc2-desc">Detailed Windows Defender & macOS Gatekeeper authorization steps.</p>
@@ -502,7 +772,7 @@
                 </a>
             </li>
             <li>
-                <a class="doc-link-item" href="TROUBLESHOOTING_FAQ.md">
+                <a class="doc-link-item" id="link-doc-faq" href="TROUBLESHOOTING_FAQ.md">
                     <div class="doc-info">
                         <h4 id="doc3-title">Troubleshooting & FAQ / 常見問題與售後手冊</h4>
                         <p id="doc3-desc">Solutions for camera glare, offline grace periods, and license questions.</p>
@@ -516,7 +786,7 @@
     <!-- Footer -->
     <footer>
         <p>© 2026 PhotoAutoCrop Pro. All Rights Reserved. | Dedicated Support: <a href="mailto:support@photoautocrop.pro">support@photoautocrop.pro</a></p>
-        <p style="margin-top: 4px;">Backed by our 30-Day 100% Money-Back Guarantee.</p>
+        <p style="margin-top: 4px;" id="footer-guar">Backed by our 30-Day 100% Money-Back Guarantee.</p>
     </footer>
 
 </div>
@@ -528,19 +798,48 @@ const i18n = {
         heroDesc: "Thank you for purchasing PhotoAutoCrop Pro on Gumroad! Here is your quick start guide to launch the workstation and bypass initial OS security prompts in seconds.",
         guarTitle: "Zero-Cloud Guarantee: 100% On-Device Processing",
         guarDesc: "All computer vision detection and perspective corrections run entirely inside your computer's RAM. No photos are ever sent to any cloud server. The software operates at 100% speed completely offline with zero telemetry tracking.",
-        sec1Title: "Step 1: Choose Your Windows Edition",
+        tabWin: "Windows Guide",
+        tabMac: "macOS Guide",
+        
+        // Windows
+        winSec1Title: "Step 1: Choose Your Windows Edition",
         tagSetup: "Standard Installer",
         descSetup: "Installs cleanly to your user profile. Creates desktop shortcuts and Start Menu icons. Recommended for everyday desktop use.",
         tagPortable: "Standalone Portable",
         descPortable: "Zero installation required. Run directly from any USB flash drive or folder without touching the Windows Registry.",
-        sec2Title: "Step 2: Windows Defender SmartScreen (2-Click Walkthrough)",
-        sec2Desc: "Because PhotoAutoCrop Pro is a newly released independent developer software, Windows Defender may show a blue notification window. This is standard for indie software without $800/yr corporate EV certificates. Rest assured: it contains zero malware.",
+        winSec2Title: "Step 2: Windows Defender SmartScreen (2-Click Walkthrough)",
+        winSec2Desc: "PhotoAutoCrop Pro is an independent on-device software. Because newly released builds have not yet established widespread automated cloud reputation with Microsoft Defender, Windows may display an initial protection notification. The software is verified virus-free, operates completely offline, and contains zero adware or telemetry tracking.",
         mockTitle: "Windows protected your PC",
         mockP1: "Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.",
         mockStep1Txt: "Step 1: Click here",
         mockBtn1: "More info",
         mockBtnCancel: "Don't run",
         mockBtn2: "👉 Step 2: Run anyway",
+        
+        // macOS
+        macSec1Title: "Step 1: Install into Applications Folder",
+        tagMac: "macOS Universal Disk Image",
+        descMac: "Double-click the downloaded .dmg file, then drag the PhotoAutoCrop Pro application icon into your Applications (應用程式) folder.",
+        macSec2Title: "Step 2: macOS Gatekeeper Authorization (2 Easy Methods)",
+        macSec2Desc: "macOS Gatekeeper protects your Mac by default against unnotarized independent software. You can authorize PhotoAutoCrop Pro in seconds using either method below:",
+        macM1Badge: "✨ Recommended Method (Fastest)",
+        macM1Title: "Method 1: Control + Click Open",
+        macM1Desc: "Bypasses Gatekeeper without modifying any system security settings:",
+        macM1Steps: [
+            "In Finder, open your <strong>Applications</strong> folder.",
+            "Hold down the <strong><code>Control</code></strong> key and click the <strong>PhotoAutoCrop Pro</strong> icon (or right-click).",
+            "In the context menu, select <strong>Open</strong>.",
+            "A confirmation prompt appears with an 'Open' button. Click <strong>Open</strong> to launch."
+        ],
+        macM1Note: "* Note: This is only required on the very first launch. macOS remembers your approval permanently.",
+        macM2Badge: "⚡ Advanced One-Click Fix",
+        macM2Title: "Method 2: Clear Quarantine Flag via Terminal",
+        macM2Desc: "If macOS displays 'App is damaged and can't be opened' or strictly prevents launch, remove Apple's automated download quarantine attribute with one command:",
+        macM2Note: "* Technical note: Removes the com.apple.quarantine attribute attached to web-downloaded binaries.",
+        copyBtnText: "📋 Copy Command",
+        copyBtnCopied: "✓ Copied to Clipboard!",
+        
+        // Tour & Docs
         sec3Title: "Step 3: Gumroad License Activation & 3-Minute Tour",
         tour1Title: "Enter License Key",
         tour1Desc: "Paste your 32-character key from your Gumroad receipt email to unlock unlimited batch export.",
@@ -554,100 +853,239 @@ const i18n = {
         doc2Title: "Installation & Security Trust Guide / 安裝與安全性指南",
         doc2Desc: "Detailed Windows Defender & macOS Gatekeeper authorization steps.",
         doc3Title: "Troubleshooting & FAQ / 常見問題與售後手冊",
-        doc3Desc: "Solutions for camera glare, offline grace periods, and license questions."
+        doc3Desc: "Solutions for camera glare, offline grace periods, and license questions.",
+        footerGuar: "Backed by our 30-Day 100% Money-Back Guarantee."
     },
     'zh-TW': {
         heroTitle: "快速上手與安全信任指南",
-        heroDesc: "感謝您在 Gumroad 支持 PhotoAutoCrop Pro！本指南協助您快速啟動工作台，並在數秒內輕鬆解除作業系統的首次安全提示。",
+        heroDesc: "感謝您在 Gumroad 支持 PhotoAutoCrop Pro！本指南協助您快速啟動工作台，並在數秒內輕鬆排除作業系統的首次開啟安全提示。",
         guarTitle: "Zero-Cloud 隱私保證：100% 本機端極速運算",
-        guarDesc: "所有影像辨識與透視拉平完全在您電腦的本地記憶體中完成，照片 1 Byte 都不會上傳至任何雲端伺服器。拔掉網路線依然 100% 離線高速運作，無任何木馬或行為追蹤。",
-        sec1Title: "第 1 步：選擇適合您的 Windows 版本",
+        guarDesc: "所有影像辨識與透視拉平完全在您電腦的本地記憶體中完成，照片絕不會上傳至任何雲端伺服器。拔掉網路線依然 100% 離線高速運作，無任何木馬或行為追蹤。",
+        tabWin: "🪟 Windows 使用者指引",
+        tabMac: "🍎 macOS 使用者指引",
+        
+        // Windows
+        winSec1Title: "第 1 步：選擇適合您的 Windows 版本",
         tagSetup: "安裝版精靈",
         descSetup: "自動安裝至使用者目錄，自動於桌面與開始功能表建立高清捷徑。推薦日常電腦主力使用。",
         tagPortable: "隨身免安裝版",
         descPortable: "單一執行檔隨點即開，可直接放入 USB 隨身碟隨插即用，不更動任何系統登錄檔。",
-        sec2Title: "第 2 步：Windows Defender SmartScreen 藍色視窗放行圖解",
-        sec2Desc: "由於軟體為剛發行之獨立開發者作品，尚未累積數萬次下載量，Windows 會主動提示防護視窗。我們未將每年數百美元的企業認證費轉嫁至售價，請安心放行，絕無病毒。",
+        winSec2Title: "第 2 步：Windows Defender SmartScreen 藍色視窗放行圖解",
+        winSec2Desc: "PhotoAutoCrop Pro 是一套純本機離線桌面工具。由於獨立發行版本未內建微軟高額年費之企業預載憑證，微軟 SmartScreen 會在初次啟動新發行版本時出現預設防護提示。所有安裝檔均通過雜湊驗證，不含惡意程式，且 100% 於本機端執行，請安心放行。",
         mockTitle: "Windows 保護了您的電腦",
         mockP1: "Microsoft Defender SmartScreen 已阻止未辨識的應用程式啟動。執行此應用程式可能會讓您的電腦面臨風險。",
         mockStep1Txt: "第一步：點選此處藍色文字",
         mockBtn1: "其他資訊",
         mockBtnCancel: "不要執行",
         mockBtn2: "👉 第二步：仍要執行",
+        
+        // macOS
+        macSec1Title: "第 1 步：安裝至應用程式資料夾",
+        tagMac: "macOS 通用磁碟映像檔",
+        descMac: "連按兩下開啟下載的 .dmg 檔案，將 PhotoAutoCrop Pro 圖示拖入 Applications (應用程式) 資料夾中。",
+        macSec2Title: "第 2 步：macOS Gatekeeper 初次開啟放行指南（2 招極速放行）",
+        macSec2Desc: "macOS Gatekeeper 預設會對未簽章之獨立軟體進行安全性攔截。請依個人習慣選用以下任一招式，數秒內即可順暢放行：",
+        macM1Badge: "✨ 推薦招式（最簡便・無需指令）",
+        macM1Title: "招式 1：按住 Control 鍵點選打開",
+        macM1Desc: "無需修改任何深層系統設定即可秒速放行：",
+        macM1Steps: [
+            "打開 Finder，進入「<strong>應用程式 (Applications)</strong>」資料夾。",
+            "<strong>按住鍵盤上的 <code>Control</code> 鍵不放</strong>，同時點選 <strong>PhotoAutoCrop Pro</strong> 圖示（或按滑鼠右鍵）。",
+            "在彈出的選單中點選「<strong>打開 (Open)</strong>」。",
+            "系統跳出確認提示視窗，點擊視窗內的「<strong>打開</strong>」按鈕即可正常啟動！"
+        ],
+        macM1Note: "* 提示：此步驟僅需在首次開啟時操作一次，macOS 將永久記錄信任設定，往後直接連按兩下即可啟動。",
+        macM2Badge: "⚡ 備用招式（終端機一鍵排除隔離）",
+        macM2Title: "招式 2：終端機清除 Quarantine 隔離標籤",
+        macM2Desc: "若系統提示「已損壞，無法打開」或嚴格阻擋，請開啟終端機貼入以下指令即可瞬間排除：",
+        macM2Note: "* 技術原理：移除 macOS 對網路下載檔案自動附加之 com.apple.quarantine 隔離屬性。",
+        copyBtnText: "📋 複製指令",
+        copyBtnCopied: "✓ 指令已複製！",
+        
+        // Tour & Docs
         sec3Title: "第 3 步：Gumroad 授權啟用與 3 步驟極速上手",
         tour1Title: "輸入授權金鑰",
         tour1Desc: "貼上 Gumroad 購買收據中的 32 碼金鑰，瞬間解除試用限制，開啟無限批次處理。",
         tour2Title: "拖入翻拍照片",
         tour2Desc: "將整頁多張老相簿或 iPhone HEIC 照片直接拖入，系統 1 秒自動分割並拉平照片。",
         tour3Title: "打包匯出 300 DPI",
-        tour3Desc: "滿意後點選綠色匯出按鈕，系統自動注入 300 DPI 印刷標籤並打包為單一 ZIP 下載。",
+        tour3Desc: "滿意後點選綠色匯出按鈕，系統自動寫入 300 DPI 印刷標籤並打包為單一 ZIP 下載。",
         sec4Title: "完整離線使用手冊與技術指南",
-        doc1Title: "旗艦使用手冊 (User Manual)",
+        doc1Title: "旗艦使用手冊 (User Manual - 繁體中文)",
         doc1Desc: "完整介紹 Corner Patrol 角點巡檢、3X 放大鏡、相簿版型記憶與快速鍵教學。",
-        doc2Title: "安裝與安全性信任指引 (Installation Guide)",
+        doc2Title: "安裝與安全性信任指引 (Installation Guide - 繁體中文)",
         doc2Desc: "包含 Windows Defender 與 macOS Gatekeeper 詳細排解與授權步驟。",
-        doc3Title: "常見問題與售後排解手冊 (Troubleshooting FAQ)",
-        doc3Desc: "翻拍反光抑制、30 天離線寬限期、授權碼更換電腦等詳細解答。"
+        doc3Title: "常見問題與售後排解手冊 (Troubleshooting FAQ - 繁體中文)",
+        doc3Desc: "翻拍反光抑制、30 天離線寬限期、授權碼更換電腦等詳細解答。",
+        footerGuar: "享有 30 天無條件 100% 全額退款保證。"
     },
     'zh-CN': {
         heroTitle: "快速上手与安全信任指南",
-        heroDesc: "感谢您在 Gumroad 支持 PhotoAutoCrop Pro！本指南协助您快速启动工作台，并在数秒内轻松解除操作系统的首次安全提示。",
+        heroDesc: "感谢您在 Gumroad 支持 PhotoAutoCrop Pro！本指南协助您快速启动工作台，并在数秒内轻松解除操作系统的首次打开安全提示。",
         guarTitle: "Zero-Cloud 隐私保证：100% 本地端极速运算",
-        guarDesc: "所有图像识别与透视拉平完全在您电脑的本地内存中完成，照片 1 Byte 都不会上传至任何云端服务器。拔掉网线依然 100% 离线高速运作，无任何木马或行为追踪。",
-        sec1Title: "第 1 步：选择适合您的 Windows 版本",
+        guarDesc: "所有图像识别与透视拉平完全在您电脑的本地内存中完成，照片绝不会上传至任何云端服务器。拔掉网线依然 100% 离线高速运作，无任何木马或行为追踪。",
+        tabWin: "🪟 Windows 用户指南",
+        tabMac: "🍎 macOS 用户指南",
+        
+        // Windows
+        winSec1Title: "第 1 步：选择适合您的 Windows 版本",
         tagSetup: "安装版向导",
         descSetup: "自动安装至用户目录，自动于桌面与开始菜单建立高清快捷方式。推荐日常电脑主力使用。",
         tagPortable: "便携免安装版",
         descPortable: "单一可执行文件即点即开，可直接放入 U 盘即插即用，不更改任何系统注册表。",
-        sec2Title: "第 2 步：Windows Defender SmartScreen 蓝色窗口放行图解",
-        sec2Desc: "由于软件为刚发布之独立开发者作品，尚未累积数万次下载量，Windows 会主动提示防护窗口。我们未将每年数百美元的企业认证费转嫁至售价，请安心放行，绝无病毒。",
+        winSec2Title: "第 2 步：Windows Defender SmartScreen 蓝色窗口放行图解",
+        winSec2Desc: "PhotoAutoCrop Pro 是一套纯本地离线桌面工具。由于独立发行版本未内置微软高额年费之企业预载凭据，微软 SmartScreen 会在初次启动新发行版本时出现默认防护提示。所有安装包均通过哈希验证，不含恶意程序，且 100% 于本地端执行，请安心放行。",
         mockTitle: "Windows 保护了你的电脑",
         mockP1: "Microsoft Defender SmartScreen 已阻止未识别的应用启动。运行此应用可能会导致你的电脑面临风险。",
         mockStep1Txt: "第一步：点击此处蓝色文字",
         mockBtn1: "更多信息",
         mockBtnCancel: "不运行",
         mockBtn2: "👉 第二步：仍要运行",
+        
+        // macOS
+        macSec1Title: "第 1 步：安装至应用程序文件夹",
+        tagMac: "macOS 通用磁盘映像",
+        descMac: "双击打开下载的 .dmg 文件，将 PhotoAutoCrop Pro 图标拖入 Applications (应用程序) 文件夹中。",
+        macSec2Title: "第 2 步：macOS Gatekeeper 初次打开放行指南（2 招极速放行）",
+        macSec2Desc: "macOS Gatekeeper 默认会对未签名之独立软件进行安全拦截。请依个人习惯选用以下任一方法，数秒内即可顺畅放行：",
+        macM1Badge: "✨ 推荐招式（最简便・无需命令）",
+        macM1Title: "招式 1：按住 Control 键点选打开",
+        macM1Desc: "无需修改任何深层系统设置即可秒速放行：",
+        macM1Steps: [
+            "打开 Finder，进入「<strong>应用程序 (Applications)</strong>」文件夹。",
+            "<strong>按住键盘上的 <code>Control</code> 键不放</strong>，同时点选 <strong>PhotoAutoCrop Pro</strong> 图标（或单击鼠标右键）。",
+            "在弹出的菜单中点选「<strong>打开 (Open)</strong>」。",
+            "系统跳出确认提示窗口，点击窗口内的「<strong>打开</strong>」按钮即可正常启动！"
+        ],
+        macM1Note: "* 提示：此步骤仅需在首次打开时操作一次，macOS 将永久记录信任设置，往后直接双击即可启动。",
+        macM2Badge: "⚡ 备用招式（终端一键排除隔离）",
+        macM2Title: "招式 2：终端清除 Quarantine 隔离标签",
+        macM2Desc: "若系统提示「已损坏，无法打开」或严格阻挡，请打开终端贴入以下命令即可瞬间排除：",
+        macM2Note: "* 技术原理：移除 macOS 对网络下载文件自动附加之 com.apple.quarantine 隔离属性。",
+        copyBtnText: "📋 复制命令",
+        copyBtnCopied: "✓ 命令已复制！",
+        
+        // Tour & Docs
         sec3Title: "第 3 步：Gumroad 授权激活与 3 步骤极速上手",
         tour1Title: "输入授权密钥",
         tour1Desc: "粘贴 Gumroad 购买收据中的 32 位密钥，瞬间解除试用限制，开启无限批次处理。",
         tour2Title: "拖入翻拍照片",
         tour2Desc: "将整页多张老相册或 iPhone HEIC 照片直接拖入，系统 1 秒自动分割并拉平照片。",
         tour3Title: "打包导出 300 DPI",
-        tour3Desc: "满意后点击绿色导出按钮，系统自动注入 300 DPI 印刷标签并打包为单一 ZIP 下载。",
+        tour3Desc: "满意后点击绿色导出按钮，系统自动写入 300 DPI 印刷标签并打包为单一 ZIP 下载。",
         sec4Title: "完整离线使用手册与技术指南",
         doc1Title: "旗舰使用手册 (User Manual)",
         doc1Desc: "完整介绍 Corner Patrol 角点巡检、3X 放大镜、相册版型记忆与快捷键教学。",
         doc2Title: "安装与安全性信任指引 (Installation Guide)",
         doc2Desc: "包含 Windows Defender 与 macOS Gatekeeper 详细排解与授权步骤。",
         doc3Title: "常见问题与售后排解手册 (Troubleshooting FAQ)",
-        doc3Desc: "翻拍反光抑制、30 天离线宽限期、授权码更换电脑等详细解答。"
+        doc3Desc: "翻拍反光抑制、30 天离线宽限期、授权码更换电脑等详细解答。",
+        footerGuar: "享有 30 天无条件 100% 全额退款保证。"
     }
 };
 
+let currentLang = 'en';
+
+function getDocPrefix() {
+    const p = window.location.pathname.replace(/\\/g, '/');
+    return p.includes('/docs/') || p.endsWith('/docs') ? '' : 'docs/';
+}
+
+function switchPlatform(platform) {
+    const winSec = document.getElementById('section-windows');
+    const macSec = document.getElementById('section-macos');
+    const btnWin = document.getElementById('btn-tab-windows');
+    const btnMac = document.getElementById('btn-tab-macos');
+
+    if (platform === 'macos') {
+        winSec.style.display = 'none';
+        macSec.style.display = 'block';
+        btnWin.classList.remove('active');
+        btnMac.classList.add('active');
+    } else {
+        winSec.style.display = 'block';
+        macSec.style.display = 'none';
+        btnMac.classList.remove('active');
+        btnWin.classList.add('active');
+    }
+}
+
+function copyTerminalCommand() {
+    const cmd = 'xattr -cr "/Applications/PhotoAutoCrop Pro.app"';
+    navigator.clipboard.writeText(cmd).then(() => {
+        const btn = document.getElementById('btn-copy-cmd');
+        const textSpan = document.getElementById('copy-btn-text');
+        const data = i18n[currentLang] || i18n['en'];
+        btn.classList.add('copied');
+        textSpan.textContent = data.copyBtnCopied;
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            textSpan.textContent = data.copyBtnText;
+        }, 2000);
+    }).catch(err => {
+        console.error('Copy failed:', err);
+    });
+}
+
 function switchLang(lang) {
+    currentLang = lang;
     const data = i18n[lang] || i18n['en'];
+    const prefix = getDocPrefix();
+
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
     if (lang === 'en') document.querySelectorAll('.lang-btn')[0].classList.add('active');
     if (lang === 'zh-TW') document.querySelectorAll('.lang-btn')[1].classList.add('active');
     if (lang === 'zh-CN') document.querySelectorAll('.lang-btn')[2].classList.add('active');
 
+    // Hero & Guarantee
     document.getElementById('hero-title').textContent = data.heroTitle;
     document.getElementById('hero-desc').textContent = data.heroDesc;
     document.getElementById('guar-title').textContent = data.guarTitle;
     document.getElementById('guar-desc').textContent = data.guarDesc;
-    document.getElementById('sec1-title').textContent = data.sec1Title;
+    document.getElementById('tab-label-win').textContent = data.tabWin;
+    document.getElementById('tab-label-mac').textContent = data.tabMac;
+
+    // Windows
+    document.getElementById('win-sec1-title').textContent = data.winSec1Title;
     document.getElementById('tag-setup').textContent = data.tagSetup;
     document.getElementById('desc-setup').textContent = data.descSetup;
     document.getElementById('tag-portable').textContent = data.tagPortable;
     document.getElementById('desc-portable').textContent = data.descPortable;
-    document.getElementById('sec2-title').textContent = data.sec2Title;
-    document.getElementById('sec2-desc').textContent = data.sec2Desc;
+    document.getElementById('win-sec2-title').textContent = data.winSec2Title;
+    document.getElementById('win-sec2-desc').textContent = data.winSec2Desc;
     document.getElementById('mock-title').textContent = data.mockTitle;
     document.getElementById('mock-p1').textContent = data.mockP1;
     document.getElementById('mock-step1-txt').textContent = data.mockStep1Txt;
     document.getElementById('mock-btn1').textContent = data.mockBtn1;
     document.getElementById('mock-btn-cancel').textContent = data.mockBtnCancel;
     document.getElementById('mock-btn2').textContent = data.mockBtn2;
+
+    // macOS
+    document.getElementById('mac-sec1-title').textContent = data.macSec1Title;
+    document.getElementById('tag-mac').textContent = data.tagMac;
+    document.getElementById('desc-mac').textContent = data.descMac;
+    document.getElementById('mac-sec2-title').textContent = data.macSec2Title;
+    document.getElementById('mac-sec2-desc').textContent = data.macSec2Desc;
+    document.getElementById('mac-m1-badge').textContent = data.macM1Badge;
+    document.getElementById('mac-m1-title').textContent = data.macM1Title;
+    document.getElementById('mac-m1-desc').textContent = data.macM1Desc;
+    
+    const stepsList = document.getElementById('mac-m1-steps');
+    stepsList.innerHTML = '';
+    data.macM1Steps.forEach(stepHtml => {
+        const li = document.createElement('li');
+        li.innerHTML = stepHtml;
+        stepsList.appendChild(li);
+    });
+
+    document.getElementById('mac-m1-note').textContent = data.macM1Note;
+    document.getElementById('mac-m2-badge').textContent = data.macM2Badge;
+    document.getElementById('mac-m2-title').textContent = data.macM2Title;
+    document.getElementById('mac-m2-desc').textContent = data.macM2Desc;
+    document.getElementById('mac-m2-note').textContent = data.macM2Note;
+    document.getElementById('copy-btn-text').textContent = data.copyBtnText;
+
+    // Tour
     document.getElementById('sec3-title').textContent = data.sec3Title;
     document.getElementById('tour1-title').textContent = data.tour1Title;
     document.getElementById('tour1-desc').textContent = data.tour1Desc;
@@ -655,6 +1093,8 @@ function switchLang(lang) {
     document.getElementById('tour2-desc').textContent = data.tour2Desc;
     document.getElementById('tour3-title').textContent = data.tour3Title;
     document.getElementById('tour3-desc').textContent = data.tour3Desc;
+
+    // Documentation Links Dynamic Redirection
     document.getElementById('sec4-title').textContent = data.sec4Title;
     document.getElementById('doc1-title').textContent = data.doc1Title;
     document.getElementById('doc1-desc').textContent = data.doc1Desc;
@@ -662,9 +1102,32 @@ function switchLang(lang) {
     document.getElementById('doc2-desc').textContent = data.doc2Desc;
     document.getElementById('doc3-title').textContent = data.doc3Title;
     document.getElementById('doc3-desc').textContent = data.doc3Desc;
+    document.getElementById('footer-guar').textContent = data.footerGuar;
+
+    // Dynamic href adjustment
+    const linkManual = document.getElementById('link-doc-manual');
+    const linkInstall = document.getElementById('link-doc-install');
+    const linkFaq = document.getElementById('link-doc-faq');
+
+    if (lang === 'zh-TW') {
+        linkManual.href = prefix + 'USER_MANUAL_zh-TW.md';
+        linkInstall.href = prefix + 'INSTALLATION_GUIDE_zh-TW.md';
+        linkFaq.href = prefix + 'TROUBLESHOOTING_FAQ_zh-TW.md';
+    } else {
+        linkManual.href = prefix + 'USER_MANUAL.md';
+        linkInstall.href = prefix + 'INSTALLATION_GUIDE.md';
+        linkFaq.href = prefix + 'TROUBLESHOOTING_FAQ.md';
+    }
 }
+
+// Auto-detect OS on load
+(function() {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.userAgent.toUpperCase().indexOf('MAC') >= 0;
+    if (isMac) {
+        switchPlatform('macos');
+    }
+})();
 </script>
 
 </body>
 </html>
-

@@ -13,6 +13,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { exec } = require('child_process');
 
 let APP_VERSION = '1.0.0';
@@ -55,9 +56,20 @@ function getUserConfigDir() {
 /**
  * 檢查是否為編譯時期指定的朋友免金鑰測試版 (Friends Edition)
  * 僅當封包內建有 build-flavor.json 時啟用；測試模式與標準商用發行版絕不觸發。
+ * 在打包發行環境（如 Electron app.isPackaged 或 process.env.NODE_ENV === 'production'）中，強制回傳 false。
  */
 function isFriendsTestEdition() {
   if (process.env.NODE_ENV === 'test' || process.env.TEST_SUITE === 'true') {
+    return false;
+  }
+  // 在打包發行環境（Electron app.isPackaged 或 production 模式）中徹底隔離後門
+  try {
+    const electron = require('electron');
+    if (electron && electron.app && electron.app.isPackaged) {
+      return false;
+    }
+  } catch (_) {}
+  if (process.env.NODE_ENV === 'production' || process.env.ELECTRON_IS_PACKAGED === 'true') {
     return false;
   }
   try {
@@ -70,6 +82,21 @@ function isFriendsTestEdition() {
   return false;
 }
 
+const LICENSE_HMAC_SECRET = 'PhotoAutoCrop-Pro-HMAC-License-Secret-2026-ZeroLeak#@!';
+
+/**
+ * 本地憑證 HMAC-SHA256 簽名產生器 (防本地 JSON 明文偽造與竄改)
+ */
+function generateLicenseSignature(data) {
+  if (!data) return '';
+  const isProStr = String(!!data.isPro);
+  const licenseKey = String(data.licenseKey || '');
+  const verifiedAt = String(data.verifiedAt || '');
+  const email = String(data.email || '');
+  const payload = `${licenseKey}|${verifiedAt}|${email}|${isProStr}`;
+  return crypto.createHmac('sha256', LICENSE_HMAC_SECRET).update(payload).digest('hex');
+}
+
 function getLicenseFilePath() {
   return path.join(getUserConfigDir(), 'license.json');
 }
@@ -78,7 +105,20 @@ function readLicenseConfig() {
   try {
     const file = getLicenseFilePath();
     if (fs.existsSync(file)) {
-      return JSON.parse(fs.readFileSync(file, 'utf8'));
+      const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
+      if (parsed && parsed.isPro) {
+        // 嚴格校驗 HMAC-SHA256 數位簽章
+        const expectedSig = generateLicenseSignature(parsed);
+        if (!parsed.signature || parsed.signature !== expectedSig) {
+          // 簽名不相符或不存在，強制視為未授權 (防偽造防篡改)
+          return { isPro: false, licenseKey: '', verifiedAt: '', email: '', tampered: true };
+        }
+        // 若為測試沙箱金鑰，且當前為正式桌面應用環境，拒絕生效
+        if (parsed.isMockTest && (process.env.IS_ELECTRON === 'true' || process.env.NODE_ENV === 'production')) {
+          return { isPro: false, licenseKey: '', verifiedAt: '', email: '', isMockTestBlocked: true };
+        }
+      }
+      return parsed;
     }
   } catch (_) {}
   return { isPro: false, licenseKey: '', verifiedAt: '', email: '' };
@@ -87,7 +127,11 @@ function readLicenseConfig() {
 function saveLicenseConfig(data) {
   try {
     const file = getLicenseFilePath();
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+    const toSave = { ...data };
+    if (toSave.isPro) {
+      toSave.signature = generateLicenseSignature(toSave);
+    }
+    fs.writeFileSync(file, JSON.stringify(toSave, null, 2), 'utf8');
     return true;
   } catch (err) {
     console.error('寫入授權憑證失敗:', err);
@@ -102,17 +146,26 @@ function verifyGumroadLicense(licenseKey) {
     // 1. 在 Electron 桌面環境中 (process.env.IS_ELECTRON === 'true') 絕對禁止任何測試金鑰
     // 2. 僅在終端機離線 BDD 自動化驗收測試 (NODE_ENV === 'test' 或 TEST_SUITE === 'true') 且非 Electron 時方可啟用
     const isIsolatedTestRunner = (process.env.NODE_ENV === 'test' || process.env.TEST_SUITE === 'true') && process.env.IS_ELECTRON !== 'true';
-    if (isIsolatedTestRunner && (licenseKey === 'PRO-TEST-VALID-KEY' || licenseKey === 'SPECIAL-PRO-KEY')) {
-      return resolve({
-        success: true,
-        uses: 1,
-        purchase: {
-          email: 'customer@photoautocrop.pro',
-          product_name: 'PhotoAutoCrop Pro',
-          license_key: licenseKey,
-          created_at: new Date().toISOString()
-        }
-      });
+    const isMockKey = (licenseKey === 'PRO-TEST-VALID-KEY' || licenseKey === 'SPECIAL-PRO-KEY');
+    if (isMockKey) {
+      if (isIsolatedTestRunner) {
+        return resolve({
+          success: true,
+          uses: 1,
+          isMockTest: true,
+          purchase: {
+            email: 'customer@photoautocrop.pro',
+            product_name: 'PhotoAutoCrop Pro',
+            license_key: licenseKey,
+            created_at: new Date().toISOString()
+          }
+        });
+      } else {
+        return resolve({
+          success: false,
+          message: '此測試專用金鑰僅限離線自動化測試環境使用，正式環境無法啟用。'
+        });
+      }
     }
 
     const postData = new URLSearchParams({
@@ -192,7 +245,15 @@ function createStaticServer() {
       const lic = readLicenseConfig();
       // 30 天離線寬限期 (Offline Grace Period)
       const GRACE_PERIOD_MS = 30 * 24 * 60 * 60 * 1000;
-      const isWithinGrace = lic.verifiedAt && (Date.now() - new Date(lic.verifiedAt).getTime() < GRACE_PERIOD_MS);
+      let isWithinGrace = false;
+      if (lic.verifiedAt) {
+        const verifiedTime = new Date(lic.verifiedAt).getTime();
+        if (!isNaN(verifiedTime)) {
+          const diff = Date.now() - verifiedTime;
+          // 必須同時驗證 diff >= 0 (徹底封死 2099 年未來時間偽造漏洞) 且 diff < GRACE_PERIOD_MS (30 天以內)
+          isWithinGrace = (diff >= 0 && diff < GRACE_PERIOD_MS);
+        }
+      }
       const isPro = !!(lic.isPro && isWithinGrace);
 
       let maskedKey = '';
@@ -237,6 +298,16 @@ function createStaticServer() {
 
           const gumroadRes = await verifyGumroadLicense(cleanKey);
           if (gumroadRes.success) {
+            // 若為測試 mock key，且處於非測試環境，禁止保存至硬碟持久化憑證，阻斷 CLI 本地偽造漏洞
+            const isTestEnv = (process.env.NODE_ENV === 'test' || process.env.TEST_SUITE === 'true') && process.env.IS_ELECTRON !== 'true';
+            if (gumroadRes.isMockTest && !isTestEnv) {
+              res.writeHead(403, { 'Content-Type': 'application/json; charset=utf-8' });
+              return res.end(JSON.stringify({
+                success: false,
+                message: '測試專用金鑰禁止於正式環境中持久化授權。'
+              }));
+            }
+
             const purchase = gumroadRes.purchase || {};
             const licData = {
               isPro: true,
@@ -245,6 +316,9 @@ function createStaticServer() {
               email: purchase.email || 'customer@gumroad.com',
               productName: purchase.product_name || 'PhotoAutoCrop Pro'
             };
+            if (gumroadRes.isMockTest) {
+              licData.isMockTest = true;
+            }
             saveLicenseConfig(licData);
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             return res.end(JSON.stringify({
@@ -375,4 +449,4 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { startServer, DEFAULT_PORT, readLicenseConfig, saveLicenseConfig, verifyGumroadLicense };
+module.exports = { startServer, DEFAULT_PORT, readLicenseConfig, saveLicenseConfig, verifyGumroadLicense, generateLicenseSignature };

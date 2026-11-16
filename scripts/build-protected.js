@@ -15,8 +15,10 @@ const { execSync } = require('child_process');
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const BACKUP_DIR = path.join(PROJECT_ROOT, '.build_backup');
 
-// 需要重點保護的核心資產 (覆蓋所有核心演算模組與伺服器邏輯)
+// 需要重點保護的核心資產 (覆蓋所有核心演算模組、後端服務與 Electron 主程序)
 const PROTECTED_FILES = [
+  path.join(PROJECT_ROOT, 'main.js'),
+  path.join(PROJECT_ROOT, 'preload.js'),
   path.join(PROJECT_ROOT, 'js', 'detector.js'),
   path.join(PROJECT_ROOT, 'js', 'smart_snap.js'),
   path.join(PROJECT_ROOT, 'js', 'orientation_scorer.js'),
@@ -123,6 +125,31 @@ function main() {
     return;
   }
 
+  // 跨平台參數解析 (--platform win | --platform mac | --platform=win | --platform=mac)
+  let platform = 'win';
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === '--platform' && args[i + 1]) {
+      platform = args[i + 1].toLowerCase();
+    } else if (a.startsWith('--platform=')) {
+      platform = a.split('=')[1].toLowerCase();
+    }
+  }
+
+  // 收集非內部控制參數 (透傳給 electron-builder，如 --publish never 等)
+  const extraArgs = [];
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === '--only-obfuscate' || a === '--only-restore') continue;
+    if (a === '--platform') {
+      i++;
+      continue;
+    }
+    if (a.startsWith('--platform=')) continue;
+    extraArgs.push(a);
+  }
+  const extraFlags = extraArgs.length > 0 ? (' ' + extraArgs.join(' ')) : '';
+
   try {
     backupFiles();
     obfuscateFiles();
@@ -132,8 +159,14 @@ function main() {
       return;
     }
 
-    console.log('[3/4] 調用 electron-builder 構建生產發行版 (NSIS 安裝包與 Portable 免安裝版)...');
-    execSync('npx electron-builder --win nsis portable', {
+    const targetLabel = platform === 'mac' ? 'macOS (DMG / ZIP)' : 'Windows (NSIS / Portable)';
+    console.log(`[3/4] 調用 electron-builder 構建生產發行版 (${targetLabel})...`);
+    const builderCmd = platform === 'mac'
+      ? `npx electron-builder --mac dmg zip${extraFlags}`
+      : `npx electron-builder --win nsis portable${extraFlags}`;
+    console.log(`  執行指令: ${builderCmd}`);
+
+    execSync(builderCmd, {
       cwd: PROJECT_ROOT,
       stdio: 'inherit'
     });

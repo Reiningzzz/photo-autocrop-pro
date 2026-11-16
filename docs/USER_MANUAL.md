@@ -182,6 +182,6 @@ Switch languages at any time from the top-right globe dropdown menu. Preferences
 ## Chapter 9: License Management, Offline Grace Period & Support
 
 - **One-Time Purchase**: Valid for lifetime use on up to 3 personal machines.
-- **7-Day Offline Grace Period**: Once activated, the software continues to work with zero internet connectivity for up to 7 consecutive days before requiring an optional heartbeat refresh.
+- **30-Day Offline Grace Period**: Once activated, the software stores an encrypted local license token allowing complete offline operations for up to 30 consecutive days before requiring an optional network refresh.
 - **Customer Support**: `support@photoautocrop.pro`
 - **30-Day Money-Back Guarantee**: 100% full refund within 30 days of purchase if you are unsatisfied for any reason.

@@ -12,22 +12,22 @@
 
 ---
 
-## 🌟 6 大真實核心技術特色 (Groundbreaking Features)
+## 🌟 7 大核心技術優勢 (Key Features & Capabilities)
 
 1. **🛡️ 100% Zero-Cloud Leak 純本機離線隱私安全**
    * 採用純前端 WebAssembly 與本機高效能演算法，所有照片運算 100% 消耗您電腦的本地 CPU/RAM，**照片絕不會上傳到任何外部伺服器，即使拔掉網路線亦可完整運作**。無遙測追蹤（Zero Telemetry）。
 2. **⚡ iPhone 原生 HEIC / HEIF 免轉檔直接拖入**
    * 內建 WebAssembly 離線 HEIC 轉碼通道，徹底解決 Windows 電腦打不開 iPhone 翻拍檔的痛點，整批拖入即刻於前端記憶體中解碼。
-3. **🖨️ 沖印級 300 DPI 標籤無損注入與 EXIF 拍攝時間戳保留**
-   * 匯出時自動在 JPEG 二進位標頭寫入 JFIF APP0 300 DPI 密度標記，重設 Orientation 為 1（Normal），並無損保留原始 EXIF 拍攝中繼資料，隨時可送專業相館沖印。
+3. **🖨️ 符合沖印標準之 300 DPI 規格標籤寫入與 EXIF 拍攝時間戳保留**
+   * 匯出時自動在 JPEG 二進位標頭寫入 JFIF APP0 300 DPI 密度標記，重設 Orientation 為 1（Normal），並完整保留原始 EXIF 拍攝中繼資料，隨時可送專業相館沖印。
 4. **🔍 Corner Patrol 1:1 像素巡檢 × 局部 3X 放大鏡 × 智慧磁吸**
    * 全螢幕 1:1 Actual Pixel 4 角同步檢驗面板，配備 Edge Highlight 高光去黑邊；拖曳錨點時自動浮現 3 倍光學顯微放大鏡，靠近邊緣自動產生磁吸效果。
-5. **📖 相簿版型記憶引擎 (Layout Memory) 與反光碎框自動癒合**
-   * 翻拍整本相簿時，系統自動學習相片幾何先驗，一鍵套用整本相簿版型；更能看穿透明保護套之刺眼反光，將碎框自動「癒合」為完整照片。
+5. **📖 相簿版型記憶引擎 (Layout Memory) 與相簿保護膜反光分割修復 (Layout Prior)**
+   * 翻拍整本相簿時，系統自動學習相片幾何先驗，一鍵套用整本相簿版型；更能依據版型幾何先驗排除透明保護套之刺眼反光干擾，將零散碎框自動重組聚合為完整照片。
 6. **💾 跨電腦隨身專案進度檔 (.pacproj) 與 50 步歷史復原**
    * 支援 IndexedDB 即時防斷電快取，並支援匯出 `.pacproj` 隨身專案檔。進度裝進隨身碟，換到筆電或桌機一秒還原所有裁切框與工作狀態。
-7. **🌐 English-First 國際化與 7 國語言即時切換**
-   * 預設採用國際專業英文工程語料，並支援繁體中文 (zh-TW)、簡體中文 (zh-CN)、日本語 (ja)、Deutsch (de)、Français (fr)、Español (es)，620+ 介面元素無死角對稱支援。
+7. **🌐 English-First 國際化與多語言完整支援**
+   * 預設採用國際專業英文工程語料，並支援繁體中文 (zh-TW)、簡體中文 (zh-CN)、日本語 (ja)、Deutsch (de)、Français (fr)、Español (es)，全介面繁中/英文多語言完整支援。
 
 ---
 
@@ -54,7 +54,8 @@
 ### 方式二：macOS 獨立應用程式 (.DMG)
 - **Apple Silicon (M1/M2/M3/M4)**：下載 `PhotoAutoCrop-Pro-Mac-1.0.0-arm64.dmg`。
 - **Intel Mac**：下載 `PhotoAutoCrop-Pro-Mac-1.0.0-x64.dmg`。
-- 將圖示拖入 Applications 資料夾，首次啟動按住 `Control` 鍵點選「打開」即可。
+- 將圖示拖入 Applications (應用程式) 資料夾。首次啟動按住 `Control` 鍵點選「打開」即可。
+- *若出現「已損壞」或 Gatekeeper 嚴格攔截，可於終端機執行 `xattr -cr "/Applications/PhotoAutoCrop Pro.app"` 移除隔離屬性（詳見 [START_HERE.html](START_HERE.html) 或 [INSTALLATION_GUIDE.md](docs/INSTALLATION_GUIDE.md)）。*
 
 ---
 

@@ -23,8 +23,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Windows Installers
-        run: npm run dist:win -- --publish never
+      - name: Build Windows Installers (Protected Obfuscated)
+        run: node scripts/build-protected.js --platform win --publish never
 
       - name: Generate Checksums (SHA-256)
         shell: pwsh
@@ -60,8 +60,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build macOS Artifacts (arm64 & x64)
-        run: npm run dist:mac -- --publish never
+      - name: Build macOS Artifacts (arm64 & x64 Protected Obfuscated)
+        run: node scripts/build-protected.js --platform mac --publish never
 
       - name: QA Automated Smoke Test (macOS App Launch Check)
         run: |

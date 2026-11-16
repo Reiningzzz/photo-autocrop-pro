@@ -4595,8 +4595,7 @@
     function getDailyQuotaStatus() {
       const isPro = (typeof licenseState !== 'undefined' && !!licenseState.isPro) ||
                     !!window.isProUser ||
-                    (window.licenseManager && typeof window.licenseManager.isPro === 'function' && window.licenseManager.isPro()) ||
-                    (localStorage.getItem('photo_autocrop_license_status') === 'valid');
+                    (window.licenseManager && typeof window.licenseManager.isPro === 'function' && window.licenseManager.isPro());
       if (isPro) {
         return { isPro: true, remaining: Infinity, used: 0, limit: Infinity };
       }
@@ -5039,8 +5038,7 @@
       // 更新授權動態卡片
       const isPro = (typeof licenseState !== 'undefined' && !!licenseState.isPro) ||
                     !!window.isProUser ||
-                    (window.licenseManager && typeof window.licenseManager.isPro === 'function' && window.licenseManager.isPro()) ||
-                    (localStorage.getItem('photo_autocrop_license_status') === 'valid');
+                    (window.licenseManager && typeof window.licenseManager.isPro === 'function' && window.licenseManager.isPro());
       const savedKey = localStorage.getItem('photo_autocrop_license_key');
       const aboutLicenseBadge = document.getElementById('aboutLicenseBadge');
       const aboutLicenseDetails = document.getElementById('aboutLicenseDetails');
