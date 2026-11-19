@@ -180,6 +180,6 @@ PhotoAutoCrop Pro 內建完整的全域國際化 (i18n) 引擎，包含 275+ 個
 ---
 
 ## 📞 技術支援與官方諮詢
-- **官方支援信箱**：`support@photoautocrop.pro`
+- **官方支援信箱**：`tony041317@gmail.com`
 - **Gumroad 產品主頁**：`https://gumroad.com/l/photocrop-pro`
 - **售後承諾**：享有 30 天無條件全額退款保證，請安心使用！

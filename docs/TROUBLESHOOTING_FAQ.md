@@ -35,7 +35,7 @@ Please check the following four quick checkpoints:
 1. **Leading/Trailing Whitespace**: Ensure no extra space was inadvertently copied before the first or after the last character.
 2. **Complete Hyphens**: Ensure all hyphens (`-`) are included in the pasted string.
 3. **Internet Access**: A single outgoing HTTPS request to `https://api.gumroad.com` is required during the initial one-second activation. Confirm your computer is connected to the internet and not blocked by a corporate VPN or proxy.
-4. **Product Variant**: Verify that your key belongs to `photocrop-pro`. If issues persist, email your order receipt to `support@photoautocrop.pro` for immediate verification.
+4. **Product Variant**: Verify that your key belongs to `photocrop-pro`. If issues persist, email your order receipt to `tony041317@gmail.com` for immediate verification.
 
 ---
 
@@ -44,7 +44,7 @@ Please check the following four quick checkpoints:
 Device seats depend on your license tier:
 - **Standard Edition ($19)**: Valid for **1 personal computer**.
 - **Pro Powerpack Edition ($39)**: Valid for up to **3 concurrent computers** (desktop, laptop, studio workstation) plus commercial client service permissions.
-- **Switching Machines**: Simply activate the key on your new machine. If you exceed your seat limit, contact `support@photoautocrop.pro` for an instant seat reset.
+- **Switching Machines**: Simply activate the key on your new machine. If you exceed your seat limit, contact `tony041317@gmail.com` for an instant seat reset.
 
 ---
 
@@ -103,4 +103,4 @@ No. PhotoAutoCrop Pro implements an intelligent dynamic port fall-back mechanism
 ### Q10: What is your refund policy?
 **Answer**:  
 We stand behind PhotoAutoCrop Pro with a **100% Full Money-Back Guarantee within 30 days of purchase**.  
-If the software does not meet your digitization needs or cannot run smoothly on your operating system, simply email `support@photoautocrop.pro` with your Gumroad order number. We will issue a complete refund immediately.
+If the software does not meet your digitization needs or cannot run smoothly on your operating system, simply email `tony041317@gmail.com` with your Gumroad order number. We will issue a complete refund immediately.

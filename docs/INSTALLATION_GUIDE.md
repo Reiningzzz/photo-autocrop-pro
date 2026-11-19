@@ -115,5 +115,5 @@ To guarantee that your downloaded installer has not been tampered with or corrup
 ## 💬 Dedicated Support & 30-Day Money-Back Guarantee
 
 If you encounter any difficulty during installation or first launch, our technical support team is ready to help:
-- **Support Email**: `support@photoautocrop.pro`
+- **Support Email**: `tony041317@gmail.com`
 - **100% Risk-Free Guarantee**: If PhotoAutoCrop Pro does not run smoothly on your computer due to hardware or OS compatibility and our team cannot resolve it, we provide a **100% full refund within 30 days of purchase**, no questions asked.

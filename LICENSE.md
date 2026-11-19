@@ -49,7 +49,7 @@ PhotoAutoCrop Pro is engineered with strict **Zero-Cloud Leak** principles:
 
 ### 5. 30-Day Money-Back Guarantee & Refund Policy
 - We stand behind the quality of PhotoAutoCrop Pro with an unconditional **30-Day Money-Back Guarantee**.
-- If the Software fails to operate properly on your hardware or does not meet your quality standards, email us at [support@photoautocrop.pro](mailto:support@photoautocrop.pro) within 30 days of purchase with your Gumroad order number or purchasing email address.
+- If the Software fails to operate properly on your hardware or does not meet your quality standards, email us at [tony041317@gmail.com](mailto:tony041317@gmail.com) within 30 days of purchase with your Gumroad order number or purchasing email address.
 - **License Revocation**: Upon processing a refund, the associated license key will be marked as `refunded` on Gumroad's servers. The Software will automatically revoke Pro activation upon the next periodic license check.
 
 ---
@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ### 7. Contact
 For licensing inquiries, volume educational discounts, or customer support:
-- **Support Email**: [support@photoautocrop.pro](mailto:support@photoautocrop.pro)
+- **Support Email**: [tony041317@gmail.com](mailto:tony041317@gmail.com)
 - **Official Store**: [https://gumroad.com/l/photocrop-pro](https://gumroad.com/l/photocrop-pro)
 
 ---

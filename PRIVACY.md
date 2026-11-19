@@ -50,7 +50,7 @@ You can delete all local application data at any time by clearing the applicatio
 
 ### 5. Contact & Privacy Inquiries
 If you have any questions or security inquiries regarding this Privacy Policy, please contact our privacy compliance team:
-- **Email**: `privacy@photoautocrop.pro` or `support@photoautocrop.pro`
+- **Email**: `privacy@photoautocrop.pro` or `tony041317@gmail.com`
 - **Product Page**: `https://gumroad.com/l/photocrop-pro`
 
 ---
