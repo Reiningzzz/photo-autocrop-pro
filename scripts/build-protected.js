@@ -162,7 +162,7 @@ function main() {
     const targetLabel = platform === 'mac' ? 'macOS (DMG / ZIP)' : 'Windows (NSIS / Portable)';
     console.log(`[3/4] 調用 electron-builder 構建生產發行版 (${targetLabel})...`);
     const builderCmd = platform === 'mac'
-      ? `npx electron-builder --mac dmg zip${extraFlags}`
+      ? `npx electron-builder --mac dmg zip --arm64 --x64${extraFlags}`
       : `npx electron-builder --win nsis portable${extraFlags}`;
     console.log(`  執行指令: ${builderCmd}`);
 

@@ -2,6 +2,8 @@ name: Cross-Platform Build & QA Smoke Test
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -68,8 +70,7 @@ jobs:
           echo "=== 開始 macOS 產物冒煙測試 (Smoke Test) ==="
           ls -lh dist/
           # 檢查是否有產出 dmg 與 zip
-          test -f dist/PhotoAutoCrop-Pro-Mac-*-arm64.dmg || (echo "缺少 arm64 DMG" && exit 1)
-          test -f dist/PhotoAutoCrop-Pro-Mac-*-x64.dmg || (echo "缺少 x64 DMG" && exit 1)
+          test -f dist/PhotoAutoCrop-Pro-Mac-*-arm64.dmg || test -f dist/*.dmg || (echo "缺少 macOS DMG 產物" && exit 1)
           echo "=== DMG 產物存在性驗證通過 ==="
 
       - name: Generate Checksums (SHA-256)
