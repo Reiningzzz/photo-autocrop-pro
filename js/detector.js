@@ -720,7 +720,14 @@ class PhotoDetector {
 
     if (preferGemini) {
       try {
-        let geminiResult = await window.geminiDetector.detectPhotoRegions(sourceImage);
+        let timeoutTimer = null;
+        const timeoutPromise = new Promise((_, reject) => {
+          timeoutTimer = setTimeout(() => reject(new Error('Gemini API 雲端連線逾時 (8秒無回應)')), 8000);
+        });
+        const callPromise = window.geminiDetector.detectPhotoRegions(sourceImage).finally(() => {
+          if (timeoutTimer) clearTimeout(timeoutTimer);
+        });
+        let geminiResult = await Promise.race([callPromise, timeoutPromise]);
         if (geminiResult && geminiResult.length > 0) {
           if (typeof window !== 'undefined' && window.layoutMemory && typeof window.layoutMemory.hasLayout === 'function' && window.layoutMemory.hasLayout()) {
             const origW = sourceImage.naturalWidth || sourceImage.width;

@@ -169,6 +169,7 @@ function verifyGumroadLicense(licenseKey) {
     }
 
     const postData = new URLSearchParams({
+      product_id: 'IlpHjHoptDC_SA9O_c5PMA==',
       product_permalink: 'photocrop-pro',
       license_key: licenseKey,
       increment_uses_count: 'true'

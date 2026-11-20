@@ -409,9 +409,9 @@
             <span data-i18n="ai_detect_batch_btn">Batch Detect All</span>
           </button>
 
-          <!-- 匯入時自動執行 AI 辨識開關 -->
+          <!-- 匯入時自動執行 AI 辨識開關 (預設取消：相片純粹匯入載入，不強制自動辨識) -->
           <label id="autoDetectOnImportWrapper" style="display: none; font-size: 0.78rem; color: var(--text-secondary); align-items: center; gap: 5px; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.05); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);" data-i18n-title="ai_auto_import_title" title="Auto-detect photos immediately upon import">
-            <input type="checkbox" id="autoDetectOnImportToggle" checked>
+            <input type="checkbox" id="autoDetectOnImportToggle">
             <span data-i18n="ai_auto_import_label">Auto Detect on Import</span>
           </label>
 
@@ -1638,6 +1638,18 @@
     let selectedPhotoIndices = new Set([0]); // 底部相片膠捲多選集合 (Office 規範)
     let lastClickedPhotoIdx = 0; // Filmstrip Shift range-selection anchor index
 
+    window.photos = photos;
+    window.getPhotos = () => photos;
+    window.setPhotos = (newPhotos) => {
+      photos = newPhotos;
+      window.photos = photos;
+    };
+    Object.defineProperty(window, 'activePhotoIdx', {
+      get: () => activePhotoIdx,
+      set: (v) => { activePhotoIdx = v; },
+      configurable: true
+    });
+
     const mainCanvas = document.getElementById('mainCanvas');
     const cropPreviewCanvas = document.getElementById('cropPreviewCanvas');
     const annotator = new window.CanvasAnnotator(mainCanvas, {
@@ -1668,6 +1680,7 @@
         showSafeToast(t('shift_drag_deleted_toast', { count }, `Deleted ${count} crop boxes via Shift-drag (Press Ctrl+Z to undo)`));
       }
     });
+    window.annotator = annotator;
 
     // ── 全域安全防呆浮層 Toast ──
     let safeToastTimer = null;
@@ -1696,6 +1709,73 @@
       }, 5500);
     }
 
+    // ── 工作台空狀態徹底復原防護 (全面重置畫布、照片隊列、按鈕與拖放遮罩) ──
+    function resetWorkspaceToEmpty() {
+      photos = [];
+      activePhotoIdx = 0;
+      selectedPhotoIndices = new Set([0]);
+      lastClickedPhotoIdx = 0;
+      const mainCanvas = document.getElementById('mainCanvas');
+      if (mainCanvas) {
+        const ctx = mainCanvas.getContext('2d');
+        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+      }
+      if (typeof annotator !== 'undefined' && annotator) {
+        annotator.image = null;
+        annotator.regions = [];
+        annotator.activeRegionId = null;
+      }
+      const fileNameEl = document.getElementById('currentFileName');
+      if (fileNameEl) fileNameEl.textContent = (window.I18n ? window.I18n.t('no_photo_loaded') : null) || t('no_photo_loaded_toast', {}, '尚未載入任何照片');
+      const badgeEl = document.getElementById('photoIndexBadge');
+      if (badgeEl) badgeEl.textContent = '0 / 0';
+      const delBtn = document.getElementById('deleteCurrentPhotoBtn');
+      if (delBtn) delBtn.style.display = 'none';
+      const detectSingleBtn = document.getElementById('detectSingleBtn');
+      if (detectSingleBtn) detectSingleBtn.style.display = 'none';
+      const detectBatchBtn = document.getElementById('detectBatchBtn');
+      if (detectBatchBtn) detectBatchBtn.style.display = 'none';
+      const autoImportWrapper = document.getElementById('autoDetectOnImportWrapper');
+      if (autoImportWrapper) autoImportWrapper.style.display = 'none';
+      const dropOverlay = document.getElementById('dropzoneOverlay');
+      if (dropOverlay) {
+        dropOverlay.classList.remove('hidden');
+        dropOverlay.style.display = 'flex';
+      }
+      renderPhotosStrip();
+      renderRegionList();
+      updatePreview(null);
+      updateTotalCounts();
+      if (window.storageManager) {
+        window.storageManager.saveSession([], 0);
+      }
+    }
+
+    // ── 執行安全重置與封存 ──
+    async function performClearSession(showConfirm = true) {
+      const savedCount = photos.length;
+      if (savedCount > 0 && showConfirm) {
+        const confirmMsg = t('confirm_clear_session', { count: savedCount }, `確定要重置工作台嗎？（共有 ${savedCount} 張相片）\n目前的進度將自動封存至歷史快照中，可隨時復原。`);
+        if (!confirm(confirmMsg)) return;
+      }
+      try {
+        if (savedCount > 0 && window.storageManager) {
+          await window.storageManager.archiveSession(photos, activePhotoIdx, t('backup_before_clear', {}, '清空前自動備份'));
+        }
+        if (window.storageManager) {
+          await window.storageManager.clearSession();
+        }
+      } catch (err) {
+        console.warn('封存工作階段失敗:', err);
+      }
+      const banner = document.getElementById('resumeBanner');
+      if (banner) banner.classList.remove('visible');
+      resetWorkspaceToEmpty();
+      showSafeToast(t('session_cleared_toast', {}, '已重置工作台（目前進度已封存至歷史工作階段）'), t('view_history', {}, '查看歷史'), () => {
+        openHistoryModal();
+      });
+    }
+
     // ── 檢查並提示工作階段續做 (非同步載入，維持 UI 響應) ──
     (async () => {
       try {
@@ -1719,18 +1799,16 @@
             showSafeToast(t('session_restored_toast', { count: saved.photos.length }, `Successfully restored previous session (${saved.photos.length} photos)`));
           };
 
-          // 終極防呆：清空重來
+          // 終極防呆：清空重來 (安全封存存檔並徹底回復乾淨空狀態)
           document.getElementById('discardSessionBtn').onclick = async () => {
             const numPhotos = saved.photos.length;
             const confirmMsg = t('confirm_clear_session', { count: numPhotos }, `Reset workspace? (${numPhotos} source images)\n\nCurrent session has been archived to history snapshots. You can restore it anytime from History.`);
 
             if (confirm(confirmMsg)) {
-              // 1. 先安全無損封存進歷史庫 (前 5 組快照之一)
               await window.storageManager.archiveSession(saved.photos, saved.activeIndex, t('backup_before_clear', {}, 'Backup before workspace reset'));
-              // 2. 清除主暫存
               await window.storageManager.clearSession();
               banner.classList.remove('visible');
-              // 3. 彈出 Toast 提示與一鍵查看
+              resetWorkspaceToEmpty();
               showSafeToast(t('session_cleared_toast', {}, 'Workspace reset (Current session archived to history)'), t('view_history', {}, 'View History'), () => {
                 openHistoryModal();
               });
@@ -1931,7 +2009,15 @@
         }
       }
 
-      const isAcceptedImage = (f) => (f.type && f.type.startsWith('image/')) || isHeicFormat(f);
+      // 健全格式檢測：相容 MIME 與副檔名（大小寫不拘），杜絕 Windows 檔案選擇器 MIME 為空導致靜默過濾
+      const isAcceptedImage = (f) => {
+        if (!f) return false;
+        if (f.type && f.type.startsWith('image/')) return true;
+        const n = (f.name || '').toLowerCase();
+        return n.endsWith('.jpg') || n.endsWith('.jpeg') || n.endsWith('.png') ||
+               n.endsWith('.webp') || n.endsWith('.bmp') || n.endsWith('.jfif') ||
+               n.endsWith('.heic') || n.endsWith('.heif') || n.endsWith('.tiff') || n.endsWith('.tif');
+      };
       const files = allFiles.filter(isAcceptedImage);
 
       // 若使用者單獨拖入專案檔且當前工作台已有相片，直接套用進度
@@ -1946,7 +2032,7 @@
               updatePreview(annotator.getActiveRegion());
             }
             if (typeof updateLayoutMemoryUI === 'function') updateLayoutMemoryUI();
-      if (typeof updateModelFeatureCard === 'function') updateModelFeatureCard();
+            if (typeof updateModelFeatureCard === 'function') updateModelFeatureCard();
             saveDebounced();
             showSafeToast(t('project_restored_toast', { count: restored }, `Project progress restored: ${restored} photos recovered.`));
           } else {
@@ -1983,6 +2069,8 @@
         // 讓出短暫渲染時間，確保讀取動畫 HUD 順暢淡入
         await new Promise(r => setTimeout(r, 60));
       }
+
+      const addedItems = [];
 
       for (let i = 0; i < files.length; i++) {
         const f = files[i];
@@ -2042,25 +2130,16 @@
           const realW = tempImg.naturalWidth || tempImg.width;
           const realH = tempImg.naturalHeight || tempImg.height;
 
-          // ── 分批匯入策略：僅在前兩張時即時辨識，大量照片採用延遲處理以防止主執行緒阻塞 ──
-          let detectedRegions = [];
-          if (window.photoDetector && files.length <= 2) {
-            try {
-              detectedRegions = await window.photoDetector.detectPhotoRegions(tempImg);
-            } catch (detErr) {
-              console.warn('自動辨識相片輪廓失敗:', detErr);
-            }
-          }
-
+          // 零阻塞載入：相片立即構建進清單，辨識完全解耦至背景執行，徹底杜絕畫面卡死
           const item = {
-            id: `photo_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+            id: `photo_${Date.now()}_${Math.random().toString(36).substr(2, 5)}_${i}`,
             name: displayName,
             fileBlob: targetBlob,
             imageObj: null, // 關鍵記憶體防護：平時不常駐 48MP DOM 元素，由 ensurePhotoImage 按需加載
             thumbnailDataUrl: thumb,
             width: realW,
             height: realH,
-            regions: detectedRegions
+            regions: []
           };
 
           // 極限記憶體防護：及時釋放暫存圖之 ObjectURL 與 DOM 引用
@@ -2069,9 +2148,12 @@
           }
           try { tempImg.src = ''; } catch (_) {}
           photos.push(item);
+          addedItems.push(item);
 
           // 關鍵流暢保障：讓出瀏覽器渲染幀，保證批次匯入時讀取動畫 Spinner 旋轉絲滑、進度條不凍結
-          await new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+          if (isMultiOrHeic) {
+            await new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+          }
         } catch (imgErr) {
           console.error('相片解析失敗:', displayName, imgErr);
         }
@@ -2095,20 +2177,27 @@
         }
       }
 
-      renderPhotosStrip();
-      switchPhoto(photos.length - files.length);
-      saveDebounced();
+      if (photos.length > 0) {
+        renderPhotosStrip();
+        const targetIdx = Math.max(0, photos.length - addedItems.length);
+        await switchPhoto(targetIdx);
+        saveDebounced();
+      } else {
+        // 若所有相片均解析失敗，安全回復空狀態拖放卡片，不留死灰畫布
+        overlay.classList.remove('hidden');
+        overlay.style.display = 'flex';
+      }
       fileInput.value = '';
       folderInput.value = '';
 
-      // ── 自動執行：若啟用「匯入時自動辨識」且已配置金鑰，自動啟動全檔案 AI 辨識 ──
-      const isAutoOn = localStorage.getItem('photoautocrop_auto_detect_import') !== 'false';
-      if (isAutoOn && window.geminiDetector && window.geminiDetector.isEnabled()) {
+      // ── 使用者自選：預設取消匯入自動辨識 (純粹極速載入相片，由使用者手動點擊「AI 識別」或「批次辨識」觸發) ──
+      const isAutoOn = localStorage.getItem('photoautocrop_auto_detect_import') === 'true';
+      if (isAutoOn && addedItems.length > 0) {
         setTimeout(() => {
           if (!isBatchRunning) {
             startBatchDetection();
           }
-        }, 400);
+        }, 200);
       }
     }
 
@@ -2179,8 +2268,13 @@
       const autoImportWrapper = document.getElementById('autoDetectOnImportWrapper');
       if (autoImportWrapper) autoImportWrapper.style.display = 'inline-flex';
 
-      const img = await ensurePhotoImage(p);
-      annotator.loadImage(img, p.regions);
+      let img = null;
+      try {
+        img = await ensurePhotoImage(p);
+      } catch (err) {
+        console.warn('載入相片影像失敗:', err);
+      }
+      if (img) annotator.loadImage(img, p.regions);
       syncRegionNames(p);
       renderPhotosStrip();
       lastClickedRegionIdx = null;
@@ -2203,37 +2297,7 @@
 
       if (photos.length === 0) {
         // 全部照片均已刪除，回到初始空狀態
-        activePhotoIdx = 0;
-        selectedPhotoIndices = new Set([0]);
-        lastClickedPhotoIdx = 0;
-        const mainCanvas = document.getElementById('mainCanvas');
-        if (mainCanvas) {
-          const ctx = mainCanvas.getContext('2d');
-          ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        }
-        annotator.image = null;
-        annotator.regions = [];
-        annotator.activeRegionId = null;
-
-        document.getElementById('currentFileName').textContent = (window.I18n ? window.I18n.t('no_photo_loaded') : null) || t('no_photo_loaded_toast', {}, '尚未載入任何照片');
-        document.getElementById('photoIndexBadge').textContent = '0 / 0';
-        document.getElementById('deleteCurrentPhotoBtn').style.display = 'none';
-        const detectSingleBtn = document.getElementById('detectSingleBtn');
-        if (detectSingleBtn) detectSingleBtn.style.display = 'none';
-        const detectBatchBtn = document.getElementById('detectBatchBtn');
-        if (detectBatchBtn) detectBatchBtn.style.display = 'none';
-        const autoImportWrapper = document.getElementById('autoDetectOnImportWrapper');
-        if (autoImportWrapper) autoImportWrapper.style.display = 'none';
-        const dropOverlay = document.getElementById('dropzoneOverlay');
-        if (dropOverlay) {
-          dropOverlay.classList.remove('hidden');
-          dropOverlay.style.display = 'flex';
-        }
-        renderPhotosStrip();
-        renderRegionList();
-        updatePreview(null);
-        updateTotalCounts();
-        window.storageManager.saveSession([], 0);
+        resetWorkspaceToEmpty();
       } else {
         // 自動切換到合適的照片焦點
         const nextIdx = (index >= photos.length) ? photos.length - 1 : index;
@@ -2321,7 +2385,7 @@
     const AUTO_IMPORT_KEY = 'photoautocrop_auto_detect_import';
     const autoDetectOnImportToggle = document.getElementById('autoDetectOnImportToggle');
     const menuAutoImportCheck = document.getElementById('menuAutoImportCheck');
-    let autoDetectOnImport = localStorage.getItem(AUTO_IMPORT_KEY) !== 'false';
+    let autoDetectOnImport = localStorage.getItem(AUTO_IMPORT_KEY) === 'true';
     if (autoDetectOnImportToggle) {
       autoDetectOnImportToggle.checked = autoDetectOnImport;
       autoDetectOnImportToggle.onchange = () => {
@@ -2771,7 +2835,7 @@
       input.click();
       setTimeout(() => input.remove(), 1000);
     });
-    bindMenu('menuItemClearSession', () => document.getElementById('discardSessionBtn').click());
+    bindMenu('menuItemClearSession', () => performClearSession(true));
 
     bindMenu('menuItemDeduplicate', () => openDuplicateModal());
     bindMenu('menuItemDeletePhoto', () => deletePhoto(activePhotoIdx));
@@ -2968,10 +3032,20 @@
     }
 
     function openShortcutsModal() {
-      if (shortcutsModal) {
+      const modal = document.getElementById('shortcutsModal');
+      if (modal) {
         recordingActionId = null;
         renderShortcutsList();
-        shortcutsModal.classList.add('visible');
+        modal.style.display = 'flex';
+        modal.classList.add('visible');
+      }
+    }
+
+    function closeShortcutsModal() {
+      const modal = document.getElementById('shortcutsModal');
+      if (modal) {
+        modal.classList.remove('visible');
+        modal.style.display = 'none';
       }
     }
 
@@ -2988,6 +3062,10 @@
       const hasCtrl = !!(e.ctrlKey || e.metaKey);
       const hasShift = !!e.shiftKey;
       const hasAlt = !!e.altKey;
+
+      if (reqKey === '?' && !hasCtrl && !hasAlt && e.key === '?') {
+        return true;
+      }
 
       if (reqCtrl !== hasCtrl) return false;
       if (reqShift !== hasShift) return false;
@@ -3009,27 +3087,23 @@
         { id: 'freemiumModal', fn: closeFreemiumModal },
         { id: 'cropInspectorModal', fn: closeCropInspectorModal },
         { id: 'aiSettingsModal', fn: closeAiSettings },
-        { id: 'shortcutsModal', fn: () => {
-          if (shortcutsModal) {
-            shortcutsModal.classList.remove('visible');
-            shortcutsModal.style.display = 'none';
-          }
-        }},
+        { id: 'shortcutsModal', fn: closeShortcutsModal },
         { id: 'duplicateModal', fn: closeDuplicateModal },
         { id: 'exportReviewModal', fn: closeExportReviewModal },
         { id: 'historyModal', fn: closeHistoryModal },
         { id: 'userGuideModal', fn: closeUserGuideModal },
-        { id: 'aboutModal', fn: closeAboutModal }
+        { id: 'aboutModal', fn: closeAboutModal },
+        { id: 'legalModal', fn: closeLegalModal }
       ];
 
       for (const m of modalEntries) {
         const el = document.getElementById(m.id);
         if (el && (el.classList.contains('visible') || (el.style.display && el.style.display !== 'none'))) {
-          if (m.fn) m.fn();
-          else {
-            el.classList.remove('visible');
-            el.style.display = 'none';
-          }
+          try {
+            if (m.fn) m.fn();
+          } catch (_) {}
+          el.classList.remove('visible');
+          el.style.display = 'none';
           closed = true;
         }
       }
@@ -4534,11 +4608,13 @@
       const curPhoto = photos[activePhotoIdx];
       if (curPhoto) {
         ensurePhotoImage(curPhoto).then(img => {
-          annotator.loadImage(img, curPhoto.regions);
+          if (img) annotator.loadImage(img, curPhoto.regions);
           renderRegionList();
           renderPhotosStrip();
           updatePreview(annotator.getActiveRegion());
           updateTotalCounts();
+        }).catch(err => {
+          console.warn('載入相片影像失敗:', err);
         });
       }
 
@@ -5107,7 +5183,23 @@
     const viewEulaBtn = document.getElementById('viewEulaBtn');
     const viewPrivacyBtn = document.getElementById('viewPrivacyBtn');
 
-        function getEulaText() {
+    function openLegalModal(title, content) {
+      if (legalModalTitle) legalModalTitle.textContent = title;
+      if (legalModalContent) legalModalContent.textContent = content;
+      if (legalModal) {
+        legalModal.style.display = 'flex';
+        legalModal.classList.add('visible');
+      }
+    }
+
+    function closeLegalModal() {
+      if (legalModal) {
+        legalModal.classList.remove('visible');
+        legalModal.style.display = 'none';
+      }
+    }
+
+    function getEulaText() {
       return `${t('eula_title', {}, 'PhotoAutoCrop Pro — 最終使用者授權協議 (EULA)')}\n\n` +
         `${t('eula_p1_title', {}, '1. 授權授予 (Grant of License)：')}\n` +
         `${t('eula_p1_desc', {}, '購買本軟體即授予您非專屬、終身使用之授權。Standard 版限 1 台裝置使用；Pro 商業版支援至多 3 台個人或工作室電腦使用，並得用於商業數位化服務。')}\n\n` +

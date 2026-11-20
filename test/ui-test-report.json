@@ -1,0 +1,143 @@
+{
+  "passed": 28,
+  "failed": 0,
+  "suites": [
+    {
+      "name": "模組 1: 頂部主選單開闔與動作觸發",
+      "items": [
+        {
+          "name": "1.1 頂部 6 個主選單點擊開闔與單一展開互斥性",
+          "status": "PASS"
+        },
+        {
+          "name": "1.2 File 選單項目動作觸發 (AddPhotos, AddFolder, Export, Sidecar, History, Clear)",
+          "status": "PASS"
+        },
+        {
+          "name": "1.3 Edit 選單項目動作觸發 (Deduplicate, DeletePhoto, ClearRegions)",
+          "status": "PASS"
+        },
+        {
+          "name": "1.4 View 選單項目動作觸發 (PrevPhoto, NextPhoto, ToggleSnap)",
+          "status": "PASS"
+        },
+        {
+          "name": "1.5 AI 識別選單項目動作觸發 (DetectSingle, DetectBatch, ToggleAutoImport, AiSettings)",
+          "status": "PASS"
+        },
+        {
+          "name": "1.6 Settings & Help 選單項目動作觸發 (License, Shortcuts, Guide, About, Gemini Modal)",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "模組 2: 6 大全域彈窗開關、ESC 與遮罩防殘留",
+      "items": [
+        {
+          "name": "2. 彈窗實測: 商業授權管理彈窗 (licenseModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: Gemini AI 設定彈窗 (aiSettingsModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: 快捷鍵指南彈窗 (shortcutsModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: 歷史工作階段彈窗 (historyModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: 官方使用手冊彈窗 (userGuideModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: 關於軟體彈窗 (aboutModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2. 彈窗實測: 法律條款與隱私聲明彈窗 (legalModal) [開啟 / 關閉按鈕 / ESC關閉 / 遮罩校驗]",
+          "status": "PASS"
+        },
+        {
+          "name": "2.7 全域彈窗遮罩防殘留驗收 (無殘留 backdrop / 遮罩)",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "模組 3: 7 國語言切換與 DOM 元素無漏譯驗收",
+      "items": [
+        {
+          "name": "3. 語言切換實測: 繁體中文 (zh-TW)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: 简体中文 (zh-CN)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: English (en)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: 日本語 (ja)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: Deutsch (de)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: Français (fr)",
+          "status": "PASS"
+        },
+        {
+          "name": "3. 語言切換實測: Español (es)",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "模組 4: 全域快捷鍵響應實測",
+      "items": [
+        {
+          "name": "4.1 快捷鍵指南呼叫與關閉 (? / Esc)",
+          "status": "PASS"
+        },
+        {
+          "name": "4.2 批次匯出快捷鍵 (Ctrl+E)",
+          "status": "PASS"
+        },
+        {
+          "name": "4.3 裁切框操作快捷鍵: Delete(刪除) -> Ctrl+Z(復原) -> X(重做)",
+          "status": "PASS"
+        },
+        {
+          "name": "4.4 順時針 90 度旋轉快捷鍵 (R)",
+          "status": "PASS"
+        },
+        {
+          "name": "4.5 上一張與下一張相片切換快捷鍵 ([ / ])",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "模組 5: 全域頂部按鈕、工具列按鈕與彈窗交互按鈕覆蓋實測",
+      "items": [
+        {
+          "name": "5.1 頂部工具列按鈕 (Theme, Lang, AI, Pro, Upload, Zoom, Actions)",
+          "status": "PASS"
+        },
+        {
+          "name": "5.2 檢驗器 (Crop Inspector) 與各彈窗操作按鈕覆蓋",
+          "status": "PASS"
+        }
+      ]
+    }
+  ]
+}
